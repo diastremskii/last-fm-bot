@@ -32,7 +32,9 @@ describe('Controller for responses from Last.fm API:', function () {
         it('gets a valid response', function () {
             lfm.getSimilarArtists('Epica', tgStub.mockSend);
 
-            expect(tgStub.message).toEqual('<a href="https://www.last.fm/music/After+Forever">After Forever&lt;&gt;&amp;</a>\n<a href="https://www.last.fm/music/Xa%2En%2Edria">Xandria</a>');
+            expect(tgStub.message).toEqual('<a href="https://www.last.fm/music/After+Forever">After Forever&lt;&gt;&amp;</a>' +
+                '\n<a href="https://www.last.fm/music/Xa%2En%2Edria">Xandria</a>' +
+                '\n\n<a href="https://www.last.fm/music/Epica/+similar">Find more similar artists</a>');
         });
         it('gets a response without image URL', function () {
             lfm.getSimilarArtists('asddsa', tgStub.mockSend);

@@ -26,7 +26,7 @@ lfm.getSimilarArtists = function (artist, send) {
         } else {
             var htmlMarkdownArtists = artists.similarartists.artist.map( function(artist) {
                 return '<a href="' + lfm._dotsEncode(artist.url) + '">' + lfm._HTMLEscape(artist.name) + '</a>';
-            }).join('\n');
+            }).concat(lfm._moreSimilar(artist)).join('\n');;
             send(htmlMarkdownArtists);
         }
     });
@@ -49,6 +49,10 @@ lfm._dotsEncode = function (string) {
     //String returned by Lfm already escaped, but we need to
     //replace dots after domain for Telegram to correctly parse it
     return config.LFM_URL + '/music/' + string.split('/').pop().replace(/\./g, '%2E');
+};
+
+lfm._moreSimilar = function (artist) {
+    return '\n<a href="' + lfm._dotsEncode(artist) + '/+similar">Find more similar artists</a>';
 };
 
 module.exports = lfm;
