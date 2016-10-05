@@ -14,4 +14,9 @@ tg.reset = function(message, chatId) {
     tg.chatId = undefined;
 };
 
+tg.mockSend = function (message) {
+    tg.message = message;
+}
+
+
 module.exports = tg;
