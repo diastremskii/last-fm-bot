@@ -18,7 +18,8 @@ Hosted on Heroku with free account, so expect slight latency.
 1. Create a new heroku app.
 2. Select GitHub as deployment method and connect it to this or to your repository.
 3. Create a new bot account with [BotFather](https://telegram.me/BotFather).
-4. Go to your heroku app settings page and create the following config variables:
+4. Go to your heroku app settings page and create the following config variables: 
+
 - TELEGRAM_TOKEN: the token you received from the BotFather.
 - TELEGRAM_USERNAME: the username of your bot.
 - WEBHOOK_BASE_URL: your heroku app url *https://your-heroku-app-name.herokuapp.com*
