@@ -1,0 +1,55 @@
+'use strict'
+
+var lfmAPI = require('./lfmAPI');
+var config = require('../config');
+
+var lfm = {};
+
+lfm.getArtistImage = function(artist, send) {
+    lfmAPI.artist.getInfo(artist, function(artistInfo) {
+        if (artistInfo.error) {
+            send(artistInfo.message)
+        } else if (artistInfo.artist.image[4]['#text'] === ''){
+            send('This artist does not have an image');
+        } else {
+            send(artistInfo.artist.image[4]['#text']);
+        };
+    });
+};
+
+lfm.getSimilarArtists = function (artist, send, limit) {
+    var limit = limit || 10;
+    lfmAPI.artist.getSimilar(artist, limit ,function(artists) {
+        if (artists.error) {
+            send(artists.message)
+        } else if (artists.similarartists.artist.length === 0) {
+            send('No similar artists');
+        } else {
+            var htmlMarkdownArtists = artists.similarartists.artist.map( function(artist) {
+                return '<a href="' + lfm._dotsEncode(artist.url) + '">' + lfm._HTMLEscape(artist.name) + '</a>';
+            }).join('\n');
+            send(htmlMarkdownArtists);
+        }
+    });
+};
+
+lfm._HTMLEscape = function (string) {
+    var replacements = [
+        [ /\&/g, '&amp;'],
+        [ /\</g, '&lt;' ],
+        [ /\>/g, '&gt;' ]
+    ];
+    return replacements.reduce(
+        function(string, replacement) {
+            return string.replace(replacement[0], replacement[1])
+        },
+        string);
+};
+
+lfm._dotsEncode = function (string) {
+    //String returned by Lfm already escaped, but we need to
+    //replace dots after domain for Telegram to correctly parse it
+    return config.LFM_URL + '/music/' + string.split('/').pop().replace(/\./g, '%2E');
+};
+
+module.exports = lfm;
