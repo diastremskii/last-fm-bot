@@ -1,4 +1,5 @@
 # Last.fm bot
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](README.md)
 ![Heroku](https://heroku-badge.herokuapp.com/?app=lastfmbot&root=status&style=flat)
 
 A telegram bot to interact with Last.fm. Created without any dependencies (except test dependencies) for educational purposes only. Live version: https://telegram.me/l_fmbot
