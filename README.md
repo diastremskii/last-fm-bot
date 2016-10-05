@@ -19,10 +19,9 @@ Hosted on Heroku with free account, so expect slight latency.
 2. Select GitHub as deployment method and connect it to this or to your repository.
 3. Create a new bot account with [BotFather](https://telegram.me/BotFather).
 4. Go to your heroku app settings page and create the following config variables: 
-
-- TELEGRAM_TOKEN: the token you received from the BotFather.
-- TELEGRAM_USERNAME: the username of your bot.
-- WEBHOOK_BASE_URL: your heroku app url *https://your-heroku-app-name.herokuapp.com*
+ - TELEGRAM_TOKEN: the token you received from the BotFather.
+ - TELEGRAM_USERNAME: the username of your bot.
+ - WEBHOOK_BASE_URL: your heroku app url *https://your-heroku-app-name.herokuapp.com*
 
 ## Run tests
 1. Install jasmine-node globally:
