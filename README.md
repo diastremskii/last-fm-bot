@@ -22,6 +22,7 @@ Hosted on Heroku with free account, so expect slight latency.
  - TELEGRAM_TOKEN: the token you received from the BotFather.
  - TELEGRAM_USERNAME: the username of your bot.
  - WEBHOOK_BASE_URL: your heroku app url *https://your-heroku-app-name.herokuapp.com*
+ - LFM_TOKEN: your API key from Last.fm
 
 ## Run tests
 1. Install jasmine-node globally:
