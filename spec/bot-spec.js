@@ -1,8 +1,8 @@
 'use strict'
 
 var proxyquire = require('proxyquire');
-var tgStub = require('./stubs/telegramStub');
-var botCommandsStub = require('./stubs/botCommands');
+var tgStub = require('./stubs/telegramAPIStub');
+var botCommandsStub = require('./stubs/botCommandsStub');
 
 var bot = proxyquire('../modules/bot', {
   './telegramAPI': tgStub,
@@ -15,7 +15,7 @@ describe('Main bot logic', function(){
     beforeEach(function() {
       botCommandsStub.reset();
     });
-    it('gets a command to send a picture of an artist', function() {
+    it('gets a normal command', function() {
         bot.verifyMessage(tgRequests.artPic);
 
         expect(botCommandsStub.called).toBe(true);
