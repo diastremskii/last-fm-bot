@@ -1,5 +1,5 @@
 {
-  "name": "l_fmbot",
+  "name": "last-fm-bot",
   "version": "0.0.3",
   "description": "Last.fm Telegram bot",
   "main": "index.js",
@@ -7,11 +7,17 @@
     "test": "jasmine-node --config TELEGRAM_USERNAME testbot spec/",
     "start": "node index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheBeastOfCaerbannog/last-fm-bot.git"
+  },
+  "author": "Daniil Yastremskiy <Catharsis@post.cz>",
   "license": "MIT",
   "engines": {
     "node": "4.5.0"
   },
+  "bugs": "https://github.com/TheBeastOfCaerbannog/last-fm-bot/issues",
+  "homepage": "https://github.com/TheBeastOfCaerbannog/last-fm-bot",
   "devDependencies": {
     "proxyquire": "^1.7.10"
   }
