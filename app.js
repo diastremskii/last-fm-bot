@@ -23,7 +23,7 @@ http.createServer(function (req, res) {
             };
             bot.verifyMessage(body);
         } else {
-            res.writeHead(400);
+            res.writeHead(401);
         }
         res.end();
     });
