@@ -17,9 +17,8 @@ lfm.getArtistImage = function(artist, send) {
     });
 };
 
-lfm.getSimilarArtists = function (artist, send, limit) {
-    var limit = limit || 10;
-    lfmAPI.artist.getSimilar(artist, limit ,function(artists) {
+lfm.getSimilarArtists = function (artist, send) {
+    lfmAPI.artist.getSimilar(artist, function(artists) {
         if (artists.error) {
             send(artists.message)
         } else if (artists.similarartists.artist.length === 0) {

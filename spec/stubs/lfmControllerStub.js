@@ -7,7 +7,7 @@ lfm.getArtistImage = function(artist, send) {
     send(artist);
 };
 
-lfm.getSimilarArtists = function (artist, send, limit) {
+lfm.getSimilarArtists = function (artist, send) {
     lfm.called = true;
     send(artist);
 };

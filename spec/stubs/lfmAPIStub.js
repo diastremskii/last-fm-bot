@@ -20,7 +20,7 @@ lfmAPI.artist.getInfo = function(artist, callback) {
     }
 };
 
-lfmAPI.artist.getSimilar = function (artist, limit, callback) {
+lfmAPI.artist.getSimilar = function (artist, callback) {
     switch (artist) {
         case 'Epica':
             callback(lfmResponses.artist.getSimilarGood);

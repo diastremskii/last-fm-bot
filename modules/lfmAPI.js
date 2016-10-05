@@ -40,10 +40,10 @@ lfmAPI.artist.getInfo = function(artist, callback) {
     );
 };
 
-lfmAPI.artist.getSimilar = function (artist, limit, callback) {
+lfmAPI.artist.getSimilar = function (artist, callback) {
     lfmAPI.executeMethod(
         'artist.getsimilar',
-        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT + '&limit=' + limit,
+        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT + '&limit=10',
         callback
     );
 };
