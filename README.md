@@ -24,9 +24,9 @@ Hosted on Heroku with free account, so expect slight latency.
 - WEBHOOK_BASE_URL: your heroku app url *https://your-heroku-app-name.herokuapp.com*
 
 ## Run tests
-1. Install jasmine globally:
+1. Install jasmine-node globally:
     ```
-    npm install -g jasmine
+    npm install -g jasmine-node
     ```
 2. Run tests:
     ```
