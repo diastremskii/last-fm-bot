@@ -66,10 +66,16 @@ lfm.getYouTubeLink = function (artist, track, send) {
         } else {
             songURL=track.track.url.replace(/https:/, 'http:');
         };
-        lfmAPI.downloadFullPage(songURL, function (body) {
-            var url = body.match(/data-youtube-url="(.*?)"/);
-            send(url[1]);
-        });
+        if (songURL) {
+            lfmAPI.downloadFullPage(songURL, function (body) {
+                var url = body.match(/data-youtube-url="(.*?)"/);
+                if (url) {
+                    send(url[1]);
+                } else {
+                    send('No YouTube URL found')
+                };
+            });
+        };
     });
 };
 
