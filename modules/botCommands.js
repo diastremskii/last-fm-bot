@@ -47,10 +47,10 @@ botCommands['/track'] = function (parameters, message, stage) {
                 null,
                 null,
                 message.message_id,
-                tg.selectiveForceReply);
+                tg.selectiveForceReply
+            );
             context.save(message.from.id, '/track', 'askForTrack', parameters);
         } else {
-            context.delete(message.from.id);
             lfm.getTrackInfo(parameters[0], parameters[1], function (response) {
                 tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
             });
@@ -73,5 +73,8 @@ botCommands['/help'] = function (parameters, message) {
         'Markdown')
 };
 
+botCommands.clearContext = function (fromId) {
+    delete context[fromId];
+};
 
 module.exports = botCommands;

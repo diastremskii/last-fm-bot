@@ -71,7 +71,6 @@ describe('Module containing bot commands', function () {
 
             expect(tgStub.called).toBe(true);
             expect(lfmStub.called).toBe(true);
-            expect(context[1]).toBe(undefined);
 
         });
         it('gets called without parameter', function () {

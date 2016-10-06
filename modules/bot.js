@@ -9,6 +9,7 @@ var bot = {};
 bot.verifyMessage = function(body) {
     var message = body.message;
     if (bot.containsCommand(message)) {
+        botCommands.clearContext(message.from.id);
         message.text = bot.normalizeMessage(message.text);
         var parsed = bot.parseCommand(message.text);
         if (bot.commandExists(parsed.command, message.chat.id)) {
