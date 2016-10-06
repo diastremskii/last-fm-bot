@@ -26,7 +26,7 @@ lfm.getSimilarArtists = function (artist, send) {
             send('No similar artists');
         } else {
             var htmlMarkupArtists = artists.similarartists.artist.map( function(artist) {
-                return lfm._HTMLUrlTag(artist.url, artist.name);
+                return lfm._addHyperlinkTag(artist.url, artist.name);
             }).concat(lfm._getMoreSimilarURL(artist)).join('\n');
             send(htmlMarkupArtists);
         }
@@ -42,7 +42,7 @@ lfm.getTrackInfo = function (artist, track, send) {
             var trackInfo = 'Listeners: ' + track.listeners;
             trackInfo += '\nScrobbles: ' + track.playcount;
             if (track.album) {
-                trackInfo += '\n' + lfm._HTMLUrlTag(track.album.url, 'Album: ' + track.album.title);
+                trackInfo += '\n' + lfm._addHyperlinkTag(track.album.url, 'Album: ' + track.album.title);
             };
             if (track.toptags.tag.length > 0) {
                 trackInfo += '\nTags: ';
@@ -66,7 +66,7 @@ lfm.getTopTracks = function (artist, page, send) {
             send('No tracks found. Try lower page number');
         } else {
             var htmlMarkupTracks = tracks.toptracks.track.map(function (track) {
-                return lfm._HTMLUrlTag(track.url, track.name);
+                return lfm._addHyperlinkTag(track.url, track.name);
             }).join('\n');
             send(htmlMarkupTracks);
         };
@@ -81,8 +81,6 @@ lfm.getYouTubeLink = function (artist, track, send) {
             send(track.message);
         } else {
             songURL=track.track.url.replace(/https:/, 'http:');
-        };
-        if (songURL) {
             lfmAPI.downloadFullPage(songURL, function (body) {
                 var url = body.match(/data-youtube-url="(.*?)"/);
                 if (url) {
@@ -95,11 +93,11 @@ lfm.getYouTubeLink = function (artist, track, send) {
     });
 };
 
-lfm._HTMLUrlTag = function (url, description) {
-    return '<a href="' + lfm._dotsEncode(url) + '">' + lfm._HTMLEscape(description) + '</a>';
+lfm._addHyperlinkTag = function (url, description) {
+    return '<a href="' + lfm._encodeDots(url) + '">' + lfm._escapeHTML(description) + '</a>';
 };
 
-lfm._HTMLEscape = function (string) {
+lfm._escapeHTML = function (string) {
     var replacements = [
         [ /\&/g, '&amp;'],
         [ /\</g, '&lt;' ],
@@ -112,13 +110,13 @@ lfm._HTMLEscape = function (string) {
         string);
 };
 
-lfm._dotsEncode = function (string) {
+lfm._encodeDots = function (string) {
     //String returned by Lfm already escaped, but we need to
     //replace dots after domain for Telegram to correctly parse it
     return config.LFM_URL + string.replace(config.LFM_URL, '').replace(/\./g, '%2E');
 };
 
-lfm._getMoreSimilarURL = function (artist) {
+lfm._getLinkToSimilar = function (artist) {
     return '\n<a href="' + config.LFM_URL + '/music/' + qs.escape(artist) + '/+similar">Find more similar artists</a>';
 };
 
