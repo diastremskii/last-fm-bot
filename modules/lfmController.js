@@ -52,7 +52,6 @@ lfm.getTrackInfo = function (artist, track, send) {
             if (track.wiki) {
                 trackInfo += '\nInfo: ' + track.wiki.summary;
             };
-            console.log(trackInfo);
             send(trackInfo);
         };
     });
