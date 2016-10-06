@@ -41,14 +41,7 @@ botCommands['/track'] = function (parameters, message, stage) {
         tg.sendTextMessage('Please specify an artist', message.chat.id);
     } else {
         if (!stage) {
-            tg.sendTextMessage(
-                'Now send a name of the track please',
-                message.chat.id,
-                null,
-                null,
-                message.message_id,
-                tg.selectiveForceReply
-            );
+            tg.selectiveForceReply('Now send a name of the track please', message);
             context.save(message.from.id, '/track', 'askForTrack', parameters);
         } else {
             lfm.getTrackInfo(parameters[0], parameters[1], function (response) {
@@ -58,19 +51,32 @@ botCommands['/track'] = function (parameters, message, stage) {
     };
 };
 
+botCommands['/atracks'] = function (parameters, message, stage) {
+    if (!parameters) {
+        tg.sendTextMessage('Please specify an artist', message.chat.id);
+    } else {
+        if (!stage) {
+            tg.selectiveForceReply('Select a page number', message);
+            context.save(message.from.id, '/atracks', 'askForPage', parameters);
+        } else {
+            if (isNaN(parseInt(parameters[1]))) {
+                tg.selectiveForceReply('Page should be a number', message);
+                context[message.from.id].pop();
+            } else {
+                lfm.getTopTracks(parameters[0], parameters[1], function () {
+                    tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
+                });
+            };
+        };
+    };
+};
+
 botCommands['/yb'] = function (parameters, message, stage) {
     if (!parameters) {
         tg.sendTextMessage('Please specify an artist', message.chat.id);
     } else {
         if (!stage) {
-            tg.sendTextMessage(
-                'Now send a name of the track please',
-                message.chat.id,
-                null,
-                null,
-                message.message_id,
-                tg.selectiveForceReply
-            );
+            tg.selectiveForceReply('Now send a name of the track please', message);
             context.save(message.from.id, '/yb', 'askForTrack', parameters);
         } else {
             lfm.getYouTubeLink(parameters[0], parameters[1], function (response) {
@@ -90,7 +96,7 @@ botCommands['/help'] = function (parameters, message) {
         'Try: /artpic Bat For Lashes \n' +
         '/sa *artist* - get similar artists \n' +
         'Try: /sa ムック\n' +
-        '/track *artist* - get info about a track for given artist\n' + 
+        '/track *artist* - get info about a track for given artist\n' +
         '/yb *artist* - get YouTube link for track',
         message.chat.id,
         'Markdown')

@@ -14,6 +14,12 @@ tg.reset = function(message, chatId) {
     tg.chatId = undefined;
 };
 
+tg.selectiveForceReply = function(message, requestMessage) {
+    tg.called = true;
+    tg.message = message;
+    tg.chatId = requestMessage.chat.id;
+};
+
 tg.mockSend = function (message) {
     tg.message = message;
 }

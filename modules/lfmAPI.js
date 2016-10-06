@@ -64,6 +64,14 @@ lfmAPI.artist.getSimilar = function (artist, callback) {
     );
 };
 
+lfmAPI.artist.getTopTracks = function (artist, page, callback) {
+    lfmAPI.executeMethod(
+        'artist.gettoptracks',
+        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT + '&limit=10&page=' + page,
+        callback
+    );
+};
+
 lfmAPI.track.getInfo = function (artist, track, callback) {
     lfmAPI.executeMethod(
         'track.getinfo',

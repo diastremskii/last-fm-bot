@@ -50,9 +50,18 @@ tg.sendTextMessage = function(message, chatId, parseMode, hidePreview, replyTo, 
     req.end();
 };
 
-tg.selectiveForceReply = {
-    'force_reply': true,
-    'selective': true
+tg.selectiveForceReply = function (message, requestMessage, parseMode, hidePreview) {
+    tg.sendTextMessage(
+        message,
+        requestMessage.chat.id,
+        parseMode,
+        hidePreview,
+        message.from.id,
+        {
+            'force_reply': true,
+            'selective': true
+        }
+    );
 };
 
 module.exports = tg;

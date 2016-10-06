@@ -24,10 +24,10 @@ lfm.getSimilarArtists = function (artist, send) {
         } else if (artists.similarartists.artist.length === 0) {
             send('No similar artists');
         } else {
-            var htmlMarkdownArtists = artists.similarartists.artist.map( function(artist) {
+            var htmlMarkupArtists = artists.similarartists.artist.map( function(artist) {
                 return lfm._HTMLUrlTag(artist.url, artist.name);
             }).concat(lfm._getMoreSimilarURL(artist)).join('\n');;
-            send(htmlMarkdownArtists);
+            send(htmlMarkupArtists);
         }
     });
 };
@@ -43,7 +43,7 @@ lfm.getTrackInfo = function (artist, track, send) {
             if (track.album) {
                 trackInfo += '\n' + lfm._HTMLUrlTag(track.album.url, 'Album: ' + track.album.title);
             };
-            if (track.toptags.tag.length>0) {
+            if (track.toptags.tag.length > 0) {
                 trackInfo += '\nTags: ';
                 track.toptags.tag.forEach( function (tag) {
                     trackInfo += tag.name + ' ';
@@ -54,6 +54,26 @@ lfm.getTrackInfo = function (artist, track, send) {
             };
             send(trackInfo);
         };
+    });
+};
+
+lfm.getTopTracks = function (artist, page, send) {
+    lfmAPI.artist.getTopTracks(artist, page, function (tracks) {
+        if (artist.error) {
+            send(artist.message);
+        } else if (artist.toptracks.track.length === 0) {
+            send('No tracks found. Try lower page number');
+        } else {
+            //Last.fm API got a bug, limit ignored on pages 5 and 10.
+            //https://getsatisfaction.com/lastfm/topics/gettoptracks-returns-ignores-limit-on-pages-5-and-10
+            //So I can't just map results
+
+            var htmlMarkupTracks = [];
+            for(var i = 0; i < 10; ++track) {
+                htmlMarkupTracks.push(lfm._HTMLUrlTag(tracks.toptracks.track[i].url, tracks.toptracks.track[i].name));
+            };
+            send(htmlMarkupTracks.join('\n'));
+        }
     });
 };
 
@@ -72,7 +92,7 @@ lfm.getYouTubeLink = function (artist, track, send) {
                 if (url) {
                     send(url[1]);
                 } else {
-                    send('No YouTube URL found')
+                    send('No YouTube link found')
                 };
             });
         };
