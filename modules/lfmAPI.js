@@ -59,7 +59,7 @@ lfmAPI.artist.getInfo = function(artist, callback) {
 lfmAPI.artist.getSimilar = function (artist, callback) {
     lfmAPI.executeMethod(
         'artist.getsimilar',
-        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT + '&limit=10',
+        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT + '&limit=' + config.SIMILAR_LIMIT,
         callback
     );
 };
@@ -67,7 +67,8 @@ lfmAPI.artist.getSimilar = function (artist, callback) {
 lfmAPI.artist.getTopTracks = function (artist, page, callback) {
     lfmAPI.executeMethod(
         'artist.gettoptracks',
-        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT + '&limit=10&page=' + page,
+        '&artist=' + qs.escape(artist) + '&autocorrect=' + config.LFM_AUTOCORRECT +
+            '&limit=' + config.TOP_TRACKS_LIMIT +'&page=' + page,
         callback
     );
 };

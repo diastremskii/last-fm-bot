@@ -15,5 +15,7 @@ config.LFM_URL = 'https://www.last.fm';
 config.LFM_API_URL = 'http://ws.audioscrobbler.com/2.0/?method=';
 config.LFM_TOKEN = process.env.LFM_TOKEN;
 config.LFM_AUTOCORRECT = 1;
+config.SIMILAR_LIMIT = 20;
+config.TOP_TRACKS_LIMIT = 20;
 
 module.exports = config;
