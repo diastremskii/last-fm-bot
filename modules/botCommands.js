@@ -38,11 +38,12 @@ botCommands['/sa'] = function (parameters, message) {
 
 botCommands['/track'] = function (parameters, message, stage) {
     if (!parameters) {
-        tg.sendTextMessage('Please specify an artist', message.chat.id);
+        tg.sendTextMessage('Send me the artist name please', message.chat.id);
+        context.save(message.from.id, '/track', 'waitForArtist');
     } else {
-        if (!stage) {
+        if (stage === 'waitForArtist' || !stage) {
             tg.selectiveForceReply('Now send a name of the track please', message);
-            context.save(message.from.id, '/track', 'askForTrack', parameters);
+            context.save(message.from.id, '/track', 'waitForTrack', parameters);
         } else {
             lfm.getTrackInfo(parameters[0], parameters[1], function (response) {
                 tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
@@ -53,11 +54,12 @@ botCommands['/track'] = function (parameters, message, stage) {
 
 botCommands['/atracks'] = function (parameters, message, stage) {
     if (!parameters) {
-        tg.sendTextMessage('Please specify an artist', message.chat.id);
+        tg.sendTextMessage('Send me the artist name please', message.chat.id);
+        context.save(message.from.id, '/atracks', 'waitForArtist');
     } else {
-        if (!stage) {
-            tg.selectiveForceReply('Select a page number', message);
-            context.save(message.from.id, '/atracks', 'askForPage', parameters);
+        if (stage === 'waitForArtist' || !stage) {
+            tg.selectiveForceReply('Great! Now select a page number', message);
+            context.save(message.from.id, '/atracks', 'waitForPage', parameters);
         } else {
             if (isNaN(parseInt(parameters[1]))) {
                 tg.selectiveForceReply('Page should be a number', message);
@@ -73,9 +75,10 @@ botCommands['/atracks'] = function (parameters, message, stage) {
 
 botCommands['/yb'] = function (parameters, message, stage) {
     if (!parameters) {
-        tg.sendTextMessage('Please specify an artist', message.chat.id);
+        tg.sendTextMessage('Send me the artist name please', message.chat.id);
+        context.save(message.from.id, '/yb', 'waitForArtist');
     } else {
-        if (!stage) {
+        if (stage === 'waitForArtist' || !stage) {
             tg.selectiveForceReply('Now send a name of the track please', message);
             context.save(message.from.id, '/yb', 'askForTrack', parameters);
         } else {
@@ -92,12 +95,14 @@ botCommands['/start'] = function (parameters, message) {
 
 botCommands['/help'] = function (parameters, message) {
     tg.sendTextMessage(
-        '/artpic *artist* - get a picture of an artist \n' +
-        'Try: /artpic Bat For Lashes \n' +
-        '/sa *artist* - get similar artists \n' +
-        'Try: /sa ムック\n' +
-        '/track *artist* - get info about a track for given artist\n' +
-        '/yb *artist* - get YouTube link for track',
+        '[] - means what this argument is optional\n \
+        /artpic _artist_ - get a picture of an artist\n \
+        Try: /artpic Bat For Lashes\n \
+        /sa _artist_ - get similar artists\n \
+        Try: /sa ムック\n \
+        /track _artist_ - get info about a track for given artist\n \
+        /yb [artist] - get YouTube link for track\n \
+        /atracks [artist] - get top tracks for given artist]',
         message.chat.id,
         'Markdown')
 };

@@ -17,10 +17,12 @@ context.save = function (userId, command, stage, parameters) {
     context[userId] = {};
     context[userId].command = command;
     context[userId].stage = stage;
-    if (!context[userId].parameters) {
-        context[userId].parameters = [parameters];
-    } else {
-        context[userId].parameters.push(parameters);
+    if (parameters) {
+        if (!context[userId].parameters) {
+            context[userId].parameters = [parameters];
+        } else {
+            context[userId].parameters.push(parameters);
+        }
     }
 };
 
