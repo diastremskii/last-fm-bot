@@ -20,16 +20,45 @@ lfm.getArtistImage = function(artist, send) {
 lfm.getSimilarArtists = function (artist, send) {
     lfmAPI.artist.getSimilar(artist, function(artists) {
         if (artists.error) {
-            send(artists.message)
+            send(artists.message);
         } else if (artists.similarartists.artist.length === 0) {
             send('No similar artists');
         } else {
             var htmlMarkdownArtists = artists.similarartists.artist.map( function(artist) {
-                return '<a href="' + lfm._dotsEncode(artist.url) + '">' + lfm._HTMLEscape(artist.name) + '</a>';
-            }).concat(lfm._moreSimilar(artist)).join('\n');;
+                return lfm._HTMLUrlTag(artist.url, artist.name);
+            }).concat(lfm._getMoreSimilarURL(artist)).join('\n');;
             send(htmlMarkdownArtists);
         }
     });
+};
+
+lfm.getTrackInfo = function (artist, track, send) {
+    lfmAPI.track.getInfo(artist, track, function (track) {
+        if (track.error) {
+            send(track.message);
+        } else {
+            track = track.track;
+            var trackInfo = '\nListeners: ' + track.listeners;
+            trackInfo += '\nScrobbles: ' + track.playcount;
+            if (track.album) {
+                trackInfo += '\n' + lfm._HTMLUrlTag(track.album.url, 'Album: ' + track.album.title);
+            };
+            if (track.toptags.tag.length>0) {
+                trackInfo += '\nTags: ';
+                track.toptags.tag.forEach( function (tag) {
+                    trackInfo += tag.name + ' ';
+                });
+            };
+            if (track.wiki) {
+                trackInfo += '\nInfo: ' + track.wiki.summary;
+            };
+            send(trackInfo);
+        };
+    });
+};
+
+lfm._HTMLUrlTag = function (url, description) {
+    return '<a href="' + lfm._dotsEncode(url) + '">' + lfm._HTMLEscape(description) + '</a>';
 };
 
 lfm._HTMLEscape = function (string) {
@@ -51,7 +80,7 @@ lfm._dotsEncode = function (string) {
     return config.LFM_URL + '/music/' + string.split('/').pop().replace(/\./g, '%2E');
 };
 
-lfm._moreSimilar = function (artist) {
+lfm._getMoreSimilarURL = function (artist) {
     return '\n<a href="' + lfm._dotsEncode(artist) + '/+similar">Find more similar artists</a>';
 };
 

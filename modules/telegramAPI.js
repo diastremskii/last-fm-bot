@@ -18,13 +18,15 @@ tg.setupWebhook = function() {
     });
 };
 
-tg.sendTextMessage = function(message, chatId, parseMode, hidePreview) {
+tg.sendTextMessage = function(message, chatId, parseMode, hidePreview, replyTo, replyMarkup) {
 
-    var postData = qs.stringify({
-        chat_id : chatId,
+    var postData = JSON.stringify({
         text: message,
+        chat_id : chatId,
         parse_mode: parseMode || '',
-        disable_web_page_preview: hidePreview || 0
+        disable_web_page_preview: hidePreview || 0,
+        reply_to_message_id: replyTo || '',
+        reply_markup: replyMarkup || ''
     });
 
     var options = {
@@ -33,7 +35,7 @@ tg.sendTextMessage = function(message, chatId, parseMode, hidePreview) {
         path: '/bot' + config.TOKEN + '/sendMessage',
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': ' application/json',
             'Content-Length': Buffer.byteLength(postData)
         }
     };
@@ -46,6 +48,11 @@ tg.sendTextMessage = function(message, chatId, parseMode, hidePreview) {
 
     req.write(postData);
     req.end();
+};
+
+tg.selectiveForceReply = {
+    'force_reply': true,
+    'selective': true
 };
 
 module.exports = tg;

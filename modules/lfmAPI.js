@@ -48,4 +48,12 @@ lfmAPI.artist.getSimilar = function (artist, callback) {
     );
 };
 
+lfmAPI.track.getInfo = function (artist, track, callback) {
+    lfmAPI.executeMethod(
+        'track.getinfo',
+        '&artist=' + qs.escape(artist) + '&track=' + qs.escape(track) + '&autocorrect=' +  config.LFM_AUTOCORRECT,
+        callback
+    );
+};
+
 module.exports = lfmAPI;

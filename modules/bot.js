@@ -14,6 +14,8 @@ bot.verifyMessage = function(body) {
         if (bot.commandExists(parsed.command, message.chat.id)) {
             botCommands[parsed.command](parsed.parameters, message);
         }
+    } else {
+        botCommands.notACommand(message);
     }
 };
 
