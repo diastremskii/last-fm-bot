@@ -56,7 +56,7 @@ tg.selectiveForceReply = function (message, requestMessage, parseMode, hidePrevi
         requestMessage.chat.id,
         parseMode,
         hidePreview,
-        requestMessage.from.id,
+        requestMessage.message_id,
         {
             'force_reply': true,
             'selective': true

@@ -59,9 +59,9 @@ lfm.getTrackInfo = function (artist, track, send) {
 
 lfm.getTopTracks = function (artist, page, send) {
     lfmAPI.artist.getTopTracks(artist, page, function (tracks) {
-        if (artist.error) {
-            send(artist.message);
-        } else if (artist.toptracks.track.length === 0) {
+        if (tracks.error) {
+            send(tracks.message);
+        } else if (tracks.toptracks.track.length === 0) {
             send('No tracks found. Try lower page number');
         } else {
             //Last.fm API got a bug, limit ignored on pages 5 and 10.
@@ -69,7 +69,7 @@ lfm.getTopTracks = function (artist, page, send) {
             //So I can't just map results
 
             var htmlMarkupTracks = [];
-            for(var i = 0; i < 10; ++track) {
+            for(var i = 0; i < 10; ++i) {
                 htmlMarkupTracks.push(lfm._HTMLUrlTag(tracks.toptracks.track[i].url, tracks.toptracks.track[i].name));
             };
             send(htmlMarkupTracks.join('\n'));
