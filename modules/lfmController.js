@@ -27,7 +27,7 @@ lfm.getSimilarArtists = function (artist, send) {
         } else {
             var htmlMarkupArtists = artists.similarartists.artist.map( function(artist) {
                 return lfm._addHyperlinkTag(artist.url, artist.name);
-            }).concat(lfm._getMoreSimilarURL(artist)).join('\n');
+            }).concat(lfm._getLinkToSimilar(artist)).join('\n');
             send(htmlMarkupArtists);
         }
     });
