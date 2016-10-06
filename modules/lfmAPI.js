@@ -32,6 +32,22 @@ lfmAPI.executeMethod = function (method, options, callback) {
     });
 }
 
+lfmAPI.downloadFullPage = function (url, callback) {
+    http.get(url, function(res) {
+        var body = '';
+
+        res.on('data', function(chunk) {
+            body += chunk;
+        });
+
+        res.on('end', function() {
+            callback(body);
+        });
+    }).on('error', function(e) {
+        console.log(`Problem with request: ${e.message}`);
+    });
+};
+
 lfmAPI.artist.getInfo = function(artist, callback) {
     lfmAPI.executeMethod(
         'artist.getinfo',

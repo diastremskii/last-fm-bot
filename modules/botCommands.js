@@ -58,6 +58,28 @@ botCommands['/track'] = function (parameters, message, stage) {
     };
 };
 
+botCommands['/yb'] = function (parameters, message, stage) {
+    if (!parameters) {
+        tg.sendTextMessage('Please specify an artist', message.chat.id);
+    } else {
+        if (!stage) {
+            tg.sendTextMessage(
+                'Now send a name of the track please',
+                message.chat.id,
+                null,
+                null,
+                message.message_id,
+                tg.selectiveForceReply
+            );
+            context.save(message.from.id, '/yb', 'askForTrack', parameters);
+        } else {
+            lfm.getYouTubeLink(parameters[0], parameters[1], function (response) {
+                tg.sendTextMessage(response, message.chat.id);
+            });
+        };
+    };
+};
+
 botCommands['/start'] = function (parameters, message) {
     tg.sendTextMessage('Howdy! This bot can provide you interaction with Last.fm via Telegram. Try /help to learn how to use the bot', message.chat.id);
 };
@@ -68,7 +90,8 @@ botCommands['/help'] = function (parameters, message) {
         'Try: /artpic Bat For Lashes \n' +
         '/sa *artist* - get similar artists \n' +
         'Try: /sa ムック\n' +
-        '/track *artist* - get info about a track for given artist\n',
+        '/track *artist* - get info about a track for given artist\n' + 
+        '/yb *artist* - get YouTube link for track',
         message.chat.id,
         'Markdown')
 };

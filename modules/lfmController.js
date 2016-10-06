@@ -57,6 +57,22 @@ lfm.getTrackInfo = function (artist, track, send) {
     });
 };
 
+//Not in official API. Dirty.
+lfm.getYouTubeLink = function (artist, track, send) {
+    var songURL;
+    lfmAPI.track.getInfo(artist, track, function (track) {
+        if (track.error) {
+            send(track.message);
+        } else {
+            songURL=track.track.url.replace(/https:/, 'http:');
+        };
+        lfmAPI.downloadFullPage(songURL, function (body) {
+            var url = body.match(/data-youtube-url="(.*?)"/);
+            send(url[1]);
+        });
+    });
+};
+
 lfm._HTMLUrlTag = function (url, description) {
     return '<a href="' + lfm._dotsEncode(url) + '">' + lfm._HTMLEscape(description) + '</a>';
 };
