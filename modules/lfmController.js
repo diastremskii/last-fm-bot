@@ -26,7 +26,7 @@ lfm.getSimilarArtists = function (artist, send) {
         } else {
             var htmlMarkupArtists = artists.similarartists.artist.map( function(artist) {
                 return lfm._HTMLUrlTag(artist.url, artist.name);
-            }).concat(lfm._getMoreSimilarURL(artist)).join('\n');;
+            }).concat(lfm._getMoreSimilarURL(artist)).join('\n');
             send(htmlMarkupArtists);
         }
     });
@@ -64,16 +64,11 @@ lfm.getTopTracks = function (artist, page, send) {
         } else if (tracks.toptracks.track.length === 0) {
             send('No tracks found. Try lower page number');
         } else {
-            //Last.fm API got a bug, limit ignored on pages 5 and 10.
-            //https://getsatisfaction.com/lastfm/topics/gettoptracks-returns-ignores-limit-on-pages-5-and-10
-            //So I can't just map results
-
-            var htmlMarkupTracks = [];
-            for(var i = 0; i < 10; ++i) {
-                htmlMarkupTracks.push(lfm._HTMLUrlTag(tracks.toptracks.track[i].url, tracks.toptracks.track[i].name));
-            };
-            send(htmlMarkupTracks.join('\n'));
-        }
+            var htmlMarkupTracks = tracks.toptracks.track.map(function (track) {
+                return lfm._HTMLUrlTag(track.url, track.name);
+            }).join('\n');
+            send(htmlMarkupTracks);
+        };
     });
 };
 
