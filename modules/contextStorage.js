@@ -24,4 +24,8 @@ context.save = function (userId, command, stage, parameters) {
     }
 };
 
+context.delete = function (userId) {
+    delete context[userId];
+};
+
 module.exports = context;

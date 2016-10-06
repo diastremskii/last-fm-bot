@@ -50,6 +50,7 @@ botCommands['/track'] = function (parameters, message, stage) {
                 tg.selectiveForceReply);
             context.save(message.from.id, '/track', 'askForTrack', parameters);
         } else {
+            context.delete(message.from.id);
             lfm.getTrackInfo(parameters[0], parameters[1], function (response) {
                 tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
             });

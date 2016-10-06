@@ -38,7 +38,7 @@ lfm.getTrackInfo = function (artist, track, send) {
             send(track.message);
         } else {
             track = track.track;
-            var trackInfo = '\nListeners: ' + track.listeners;
+            var trackInfo = 'Listeners: ' + track.listeners;
             trackInfo += '\nScrobbles: ' + track.playcount;
             if (track.album) {
                 trackInfo += '\n' + lfm._HTMLUrlTag(track.album.url, 'Album: ' + track.album.title);
@@ -52,6 +52,7 @@ lfm.getTrackInfo = function (artist, track, send) {
             if (track.wiki) {
                 trackInfo += '\nInfo: ' + track.wiki.summary;
             };
+            console.log(trackInfo);
             send(trackInfo);
         };
     });
