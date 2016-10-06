@@ -2,6 +2,7 @@
 
 var lfmAPI = require('./lfmAPI');
 var config = require('../config');
+var qs = require('querystring');
 
 var lfm = {};
 
@@ -118,7 +119,7 @@ lfm._dotsEncode = function (string) {
 };
 
 lfm._getMoreSimilarURL = function (artist) {
-    return '\n<a href="' + config.LFM_URL + '/music/' + artist + '/+similar">Find more similar artists</a>';
+    return '\n<a href="' + config.LFM_URL + '/music/' + qs.escape(artist) + '/+similar">Find more similar artists</a>';
 };
 
 module.exports = lfm;
