@@ -38,7 +38,7 @@ botCommands['/sa'] = function (parameters, message) {
 
 botCommands['/track'] = function (parameters, message, stage) {
     if (!parameters) {
-        tg.sendTextMessage('Send me the artist name please', message.chat.id);
+        tg.selectiveForceReply('Send me the artist name please', message);
         context.save(message.from.id, '/track', 'waitForArtist');
     } else {
         if (stage === 'waitForArtist' || !stage) {
@@ -54,7 +54,7 @@ botCommands['/track'] = function (parameters, message, stage) {
 
 botCommands['/atracks'] = function (parameters, message, stage) {
     if (!parameters) {
-        tg.sendTextMessage('Send me the artist name please', message.chat.id);
+        tg.selectiveForceReply('Send me the artist name please', message);
         context.save(message.from.id, '/atracks', 'waitForArtist');
     } else {
         if (stage === 'waitForArtist' || !stage) {
@@ -75,7 +75,7 @@ botCommands['/atracks'] = function (parameters, message, stage) {
 
 botCommands['/yb'] = function (parameters, message, stage) {
     if (!parameters) {
-        tg.sendTextMessage('Send me the artist name please', message.chat.id);
+        tg.selectiveForceReply('Send me the artist name please', message);
         context.save(message.from.id, '/yb', 'waitForArtist');
     } else {
         if (stage === 'waitForArtist' || !stage) {
