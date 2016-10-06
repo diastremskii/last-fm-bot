@@ -119,11 +119,11 @@ lfm._HTMLEscape = function (string) {
 lfm._dotsEncode = function (string) {
     //String returned by Lfm already escaped, but we need to
     //replace dots after domain for Telegram to correctly parse it
-    return config.LFM_URL + '/music/' + string.split('/').pop().replace(/\./g, '%2E');
+    return config.LFM_URL + string.replace(config.LFM_URL, '').replace(/\./g, '%2E');
 };
 
 lfm._getMoreSimilarURL = function (artist) {
-    return '\n<a href="' + lfm._dotsEncode(artist) + '/+similar">Find more similar artists</a>';
+    return '\n<a href="' + config.LFM_URL + '/music/' + artist + '/+similar">Find more similar artists</a>';
 };
 
 module.exports = lfm;

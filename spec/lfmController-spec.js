@@ -51,7 +51,7 @@ describe('Controller for responses from Last.fm API:', function () {
         it('gets a valid response', function () {
             lfm.getTrackInfo('KoRn', 'Trash', tgStub.mockSend);
 
-            expect(tgStub.message).toEqual('Listeners: 274145\nScrobbles: 1456439\n<a href="https://www.last.fm/music/Issues">Album: Issues</a>\nTags: Nu Metal alternative metal metal Korn rock ');
+            expect(tgStub.message).toEqual('Listeners: 274145\nScrobbles: 1456439\n<a href="https://www.last.fm/music/Korn/Issues">Album: Issues</a>\nTags: Nu Metal alternative metal metal Korn rock ');
         });
         it('gets a response with error', function () {
             lfm.getTrackInfo('asddsaasd', 'ads', tgStub.mockSend);
