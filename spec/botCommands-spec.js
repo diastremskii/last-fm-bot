@@ -3,6 +3,7 @@
 var proxyquire = require('proxyquire');
 var tgStub = require('./stubs/telegramAPIStub');
 var lfmStub = require('./stubs/lfmControllerStub');
+var context = require('../modules/contextStorage');
 
 var botCommands = proxyquire('../modules/botCommands', {
     './telegramAPI': tgStub,
@@ -12,9 +13,13 @@ var botCommands = proxyquire('../modules/botCommands', {
 
 //Cut
 var exampleMessage = {
+    from: {
+        id: 1
+    },
     chat: {
         id: 1
-    }
+    },
+    text: 'test'
 };
 
 describe('Module containing bot commands', function () {
@@ -47,6 +52,30 @@ describe('Module containing bot commands', function () {
         });
         it('gets called without parameter', function () {
             botCommands['/sa']('', exampleMessage);
+
+            expect(lfmStub.called).toBe(false);
+            expect(tgStub.called).toEqual(true);
+        });
+    });
+    describe('/track command (context)', function () {
+        it('gets called with parameter', function () {
+            botCommands['/track']('Evanescence', exampleMessage);
+
+            expect(tgStub.called).toBe(true);
+            expect(lfmStub.called).toBe(false);
+            expect(context[1].parameters).toEqual(['Evanescence']);
+            expect(context[1].command).toEqual('/track');
+        });
+        it('gets response in context', function () {
+            botCommands.notACommand(exampleMessage);
+
+            expect(tgStub.called).toBe(true);
+            expect(lfmStub.called).toBe(true);
+            expect(context[1]).toBe(undefined);
+
+        });
+        it('gets called without parameter', function () {
+            botCommands['/track']('', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);

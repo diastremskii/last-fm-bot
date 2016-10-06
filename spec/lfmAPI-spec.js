@@ -19,4 +19,12 @@ describe('Module for making requests to Last.fm API', function () {
             });
         });
     });
+    describe('track.getSimilar', function () {
+        it('gets info about track', function (done) {
+            lfmAPI.track.getInfo('Band of Sculls', "You're Not Pretty But You Got It Goin' On", function (trackInfo) {
+                expect(trackInfo.track.name).toEqual("You're Not Pretty But You Got It Goin' On");
+                done();
+            });
+        });
+    });
 });

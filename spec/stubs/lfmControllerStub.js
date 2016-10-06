@@ -12,6 +12,11 @@ lfm.getSimilarArtists = function (artist, send) {
     send(artist);
 };
 
+lfm.getTrackInfo = function (artist, track, send) {
+    lfm.called = true;
+    send(artist + track);
+};
+
 lfm.reset = function () {
     lfm.called = false;
 }

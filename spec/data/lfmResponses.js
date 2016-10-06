@@ -2,6 +2,7 @@
 
 var responses = {};
 responses.artist = {};
+responses.track = {};
 
 //Cut
 responses.artist.getSimilarGood = {
@@ -301,6 +302,78 @@ responses.artist.getInfoNoImage = {
 };
 
 //Full
+responses.track.getInfoGood = {
+   "track":{
+      "name":"Trash",
+      "mbid":"98218fea-7fd0-4b1f-a812-b58965b978e0",
+      "url":"https://www.last.fm/music/Korn/_/Trash",
+      "duration":"207000",
+      "streamable":{
+         "#text":"0",
+         "fulltrack":"0"
+      },
+      "listeners":"274145",
+      "playcount":"1456439",
+      "artist":{
+         "name":"Korn",
+         "mbid":"ac865b2e-bba8-4f5a-8756-dd40d5e39f46",
+         "url":"https://www.last.fm/music/Korn"
+      },
+      "album":{
+         "artist":"Korn",
+         "title":"Issues",
+         "mbid":"b0a35dec-6611-4b38-a967-7eb195f26f36",
+         "url":"https://www.last.fm/music/Korn/Issues",
+         "image":[
+            {
+               "#text":"https://lastfm-img2.akamaized.net/i/u/34s/273efa78f9e4415285cf60bb5e57ea8f.png",
+               "size":"small"
+            },
+            {
+               "#text":"https://lastfm-img2.akamaized.net/i/u/64s/273efa78f9e4415285cf60bb5e57ea8f.png",
+               "size":"medium"
+            },
+            {
+               "#text":"https://lastfm-img2.akamaized.net/i/u/174s/273efa78f9e4415285cf60bb5e57ea8f.png",
+               "size":"large"
+            },
+            {
+               "#text":"https://lastfm-img2.akamaized.net/i/u/300x300/273efa78f9e4415285cf60bb5e57ea8f.png",
+               "size":"extralarge"
+            }
+         ],
+         "@attr":{
+            "position":"3"
+         }
+      },
+      "toptags":{
+         "tag":[
+            {
+               "name":"Nu Metal",
+               "url":"https://www.last.fm/tag/Nu+Metal"
+            },
+            {
+               "name":"alternative metal",
+               "url":"https://www.last.fm/tag/alternative+metal"
+            },
+            {
+               "name":"metal",
+               "url":"https://www.last.fm/tag/metal"
+            },
+            {
+               "name":"Korn",
+               "url":"https://www.last.fm/tag/Korn"
+            },
+            {
+               "name":"rock",
+               "url":"https://www.last.fm/tag/rock"
+            }
+         ]
+      }
+   }
+};
+
+//Full
 responses.artist.error = {
     "error": 6,
     "message": "The artist you supplied could not be found",
@@ -308,5 +381,15 @@ responses.artist.error = {
 
     ]
 };
+
+//Full
+responses.track.error = {
+    "error": 6,
+    "message": "Track not found",
+    "links": [
+
+    ]
+}
+
 
 module.exports = responses;

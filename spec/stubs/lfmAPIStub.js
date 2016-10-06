@@ -33,4 +33,14 @@ lfmAPI.artist.getSimilar = function (artist, callback) {
     }
 };
 
+lfmAPI.track.getInfo = function (artist, track, callback) {
+    switch (artist) {
+        case 'KoRn':
+            callback(lfmResponses.track.getInfoGood);
+            break;
+        default:
+            callback(lfmResponses.track.error);
+    }
+};
+
 module.exports = lfmAPI;
