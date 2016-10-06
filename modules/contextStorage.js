@@ -24,6 +24,10 @@ context.save = function (userId, command, stage, parameters) {
     }
 };
 
+context.pop = function (userId) {
+    return context.parameters.pop();
+};
+
 context.delete = function (userId) {
     delete context[userId];
 };
