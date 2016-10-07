@@ -53,10 +53,10 @@ tg.sendTextMessage = function(text, chatId, parseMode, hidePreview, replyTo, rep
 tg.selectiveForceReply = function (text, message, parseMode, hidePreview) {
     tg.sendTextMessage(
         text,
-        requestMessage.chat.id,
+        message.chat.id,
         parseMode,
         hidePreview,
-        requestMessage.message_id,
+        message.message_id,
         {
             'force_reply': true,
             'selective': true
