@@ -2,7 +2,7 @@
 
 var tg = require('./telegramAPI');
 var lfm = require('./lfmController');
-var context = require('./contextStorage');
+var context = require('./storage/context');
 
 var botCommands = {};
 

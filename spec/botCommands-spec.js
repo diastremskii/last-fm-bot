@@ -3,7 +3,7 @@
 var proxyquire = require('proxyquire');
 var tgStub = require('./stubs/telegramAPIStub');
 var lfmStub = require('./stubs/lfmControllerStub');
-var context = require('../modules/contextStorage');
+var context = require('../modules/storage/context');
 
 var botCommands = proxyquire('../modules/botCommands', {
     './telegramAPI': tgStub,
