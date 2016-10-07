@@ -4,20 +4,16 @@ var tgTypes = {};
 
 tgTypes.InlineKeyboardMarkup = function (rowWidth) {
     this['inline_keyboard'] = [[]];
-
-    //Pass rowWidth to limit numbers of buttons per row
+    var rowWidth = (rowWidth > 8 ? 8 : rowWidth) || 8;  //Currently maximum supported in one row
     //Closure to make this property private
     this.rowWidth = function () {
-        var rowWidth = (rowWidth > 8 ? 8 : rowWidth) || 8; //Currently maximum supported in one row
-        return function () {
-            return rowWidth;
-        }
+        return rowWidth;
     };
 };
 
 tgTypes.InlineKeyboardMarkup.prototype.add = function (text, field, fieldValue) {
     var rowCount = this['inline_keyboard'].length;
-    if (this['inline_keyboard'][rowCount-1].length === this.rowWidth-1) {
+    if (this['inline_keyboard'][rowCount-1].length === this.rowWidth()-1) {
         this.endRow();
     }
     this['inline_keyboard'][rowCount-1].push(
