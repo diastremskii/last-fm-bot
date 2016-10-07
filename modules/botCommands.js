@@ -100,13 +100,13 @@ botCommands['/start'] = function (parameters, message) {
 botCommands['/help'] = function (parameters, message) {
     tg.sendTextMessage(
         '[] - means what this argument is optional\n \
-        /artpic _artist_ - get a picture of an artist\n \
-        Try: /artpic Bat For Lashes\n \
-        /sa _artist_ - get similar artists\n \
-        Try: /sa ムック\n \
-        /track _artist_ - get info about a track for given artist\n \
-        /yb [artist] - get YouTube link for track\n \
-        /atracks [artist] - get top tracks for given artist]',
+/artpic _artist_ - get a picture of an artist\n \
+Try: /artpic Bat For Lashes\n \
+/sa _artist_ - get similar artists\n \
+Try: /sa ムック\n \
+/track _artist_ - get info about a track for given artist\n \
+/yb [artist] - get YouTube link for track\n \
+/atracks [artist] - get top tracks for given artist]',
         message.chat.id,
         'Markdown')
 };
