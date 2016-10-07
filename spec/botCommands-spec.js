@@ -6,7 +6,7 @@ var lfmStub = require('./stubs/lfmControllerStub');
 var context = require('../modules/storage/context');
 
 var botCommands = proxyquire('../modules/botCommands', {
-    './telegramAPI': tgStub,
+    './telegram/telegramAPI': tgStub,
     './lfmController': lfmStub
 });
 

@@ -1,6 +1,6 @@
 'use strict'
 
-var tg = require('./telegramAPI');
+var tg = require('./telegram/telegramAPI');
 var lfm = require('./lfmController');
 var context = require('./storage/context');
 

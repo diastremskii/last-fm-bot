@@ -1,7 +1,7 @@
 var config = require('./config');
 var http = require('http');
 var bot = require('./modules/bot.js');
-var tg = require('./modules/telegramAPI');
+var tg = require('./modules/telegram/telegramAPI');
 
 tg.setupWebhook();
 

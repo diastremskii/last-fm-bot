@@ -5,7 +5,7 @@ var tgStub = require('./stubs/telegramAPIStub');
 var botCommandsStub = require('./stubs/botCommandsStub');
 
 var bot = proxyquire('../modules/bot', {
-  './telegramAPI': tgStub,
+  './telegram/telegramAPI': tgStub,
   './botCommands': botCommandsStub
 });
 

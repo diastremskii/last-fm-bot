@@ -1,6 +1,6 @@
 'use strict'
 
-var config = require('../config');
+var config = require('../../config');
 var https = require('https');
 var qs = require('querystring');
 
@@ -18,10 +18,10 @@ tg.setupWebhook = function() {
     });
 };
 
-tg.sendTextMessage = function(message, chatId, parseMode, hidePreview, replyTo, replyMarkup) {
+tg.sendTextMessage = function(text, chatId, parseMode, hidePreview, replyTo, replyMarkup) {
 
     var postData = JSON.stringify({
-        text: message,
+        text: text,
         chat_id : chatId,
         parse_mode: parseMode || '',
         disable_web_page_preview: hidePreview || 0,
@@ -50,9 +50,9 @@ tg.sendTextMessage = function(message, chatId, parseMode, hidePreview, replyTo, 
     req.end();
 };
 
-tg.selectiveForceReply = function (message, requestMessage, parseMode, hidePreview) {
+tg.selectiveForceReply = function (text, message, parseMode, hidePreview) {
     tg.sendTextMessage(
-        message,
+        text,
         requestMessage.chat.id,
         parseMode,
         hidePreview,

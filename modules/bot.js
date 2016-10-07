@@ -1,7 +1,7 @@
 'use strict'
 
 var config = require('../config');
-var tg = require('./telegramAPI');
+var tg = require('./telegram/telegramAPI');
 var botCommands = require('./botCommands')
 
 var bot = {};
