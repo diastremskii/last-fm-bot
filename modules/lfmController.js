@@ -80,15 +80,15 @@ lfm.getYouTubeLink = function (artist, track, send) {
     if (songURL) {
         send(songURL);
     } else {
-        lfmAPI.track.getInfo(artist, track, function (track) {
-            if (track.error) {
-                send(track.message);
+        lfmAPI.track.getInfo(artist, track, function (trackInfo) {
+            if (trackInfo.error) {
+                send(trackInfo.message);
             } else {
-                songURL=track.track.url.replace(/https:/, 'http:');
+                songURL=trackInfo.track.url.replace(/https:/, 'http:');
                 lfmAPI.downloadFullPage(songURL, function (body) {
                     var url = body.match(/data-youtube-url="(.*?)"/);
                     if (url) {
-                        youtube.put(artist, track, url);
+                        youtube.put(artist, track, url[1]);
                         send(url[1]);
                     } else {
                         youtube.put(artist, track, null);
