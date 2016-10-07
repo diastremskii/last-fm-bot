@@ -11,7 +11,11 @@ botCommands.notACommand = function (message) {
         var command =  context[message.from.id].command;
         var stage = context[message.from.id].stage;
         var parameters = context[message.from.id].parameters;
-        parameters.push(message.text);
+        if (!parameters) {
+            parameters = message.text;
+        } else {
+            parameters.push(message.text);
+        };
         botCommands[command](parameters, message, stage);
     };
 };
@@ -63,7 +67,7 @@ botCommands['/atracks'] = function (parameters, message, stage) {
         } else {
             if (isNaN(parseInt(parameters[1]))) {
                 tg.selectiveForceReply('Page should be a number', message);
-                context[message.from.id].pop();
+                context.pop(message.from.id);
             } else {
                 lfm.getTopTracks(parameters[0], parameters[1], function (response) {
                     tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
@@ -80,7 +84,7 @@ botCommands['/yb'] = function (parameters, message, stage) {
     } else {
         if (stage === 'waitForArtist' || !stage) {
             tg.selectiveForceReply('Now send a name of the track please', message);
-            context.save(message.from.id, '/yb', 'askForTrack', parameters);
+            context.save(message.from.id, '/yb', 'waitForTrack', parameters);
         } else {
             lfm.getYouTubeLink(parameters[0], parameters[1], function (response) {
                 tg.sendTextMessage(response, message.chat.id);

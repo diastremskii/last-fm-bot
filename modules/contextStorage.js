@@ -14,20 +14,21 @@ var context = {/* user id */};
 */
 
 context.save = function (userId, command, stage, parameters) {
-    context[userId] = {};
+    if (!context[userId]) {
+        context[userId] = {};
+    };
     context[userId].command = command;
     context[userId].stage = stage;
     if (parameters) {
         if (!context[userId].parameters) {
-            context[userId].parameters = [parameters];
-        } else {
-            context[userId].parameters.push(parameters);
-        }
-    }
+            context[userId].parameters = [];
+        };
+        context[userId].parameters.push(parameters);
+    };
 };
 
 context.pop = function (userId) {
-    return context.parameters.pop();
+    return context[userId].parameters.pop();
 };
 
 context.delete = function (userId) {
