@@ -22,6 +22,7 @@ tg.selectiveForceReply = function(message, requestMessage) {
 
 tg.mockSend = function (message) {
     tg.message = message;
+    tg.called = true;
 }
 
 

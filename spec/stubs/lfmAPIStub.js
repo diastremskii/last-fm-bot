@@ -35,12 +35,28 @@ lfmAPI.artist.getSimilar = function (artist, callback) {
 
 lfmAPI.track.getInfo = function (artist, track, callback) {
     switch (artist) {
-        case 'KoRn':
+        case 'Korn':
             callback(lfmResponses.track.getInfoGood);
+            break;
+        case 'Clawfinger':
+            callback(lfmResponses.track.getInfoUrlOnly);
             break;
         default:
             callback(lfmResponses.track.error);
     }
 };
+
+lfmAPI.downloadFullPage = function (url, callback) {
+    lfmAPI.downloadFullPage.called = true;
+    if (/Clawfinger/.test(url)) {
+        callback(lfmResponses.pageWithUrl);
+    } else {
+        callback(lfmResponses.pageWithoutUrl);
+    };
+};
+
+lfmAPI.reset = function () {
+    lfmAPI.downloadFullPage.called = false;
+}
 
 module.exports = lfmAPI;

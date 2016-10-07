@@ -373,6 +373,25 @@ responses.track.getInfoGood = {
    }
 };
 
+//Cut
+responses.track.getInfoUrlOnly = {
+    "track":{
+        "url": "https://www.last.fm/music/Clawfinger/_/Do+What+I+Say"
+    }
+};
+
+responses.pageWithUrl = 'data-spotify-id="3Y2owDdKtpbHiCH6Vs5P1p" \
+                            data-spotify-url="https://open.spotify.com/track/3Y2owDdKtpbHiCH6Vs5P1p" \
+                            data-youtube-id="-1CE4P8qqPE" \
+                            data-youtube-url="https://www.youtube.com/watch?v=-1CE4P8qqPE" \
+                            data-sevendigital-id="13694701" \
+                            data-sevendigital-url="None"'
+
+responses.pageWithoutUrl =  'data-spotify-id="3Y2owDdKtpbHiCH6Vs5P1p" \
+                                data-spotify-url="https://open.spotify.com/track/3Y2owDdKtpbHiCH6Vs5P1p" \
+                                data-sevendigital-id="13694701" \
+                                data-sevendigital-url="None"'
+
 //Full
 responses.artist.error = {
     "error": 6,

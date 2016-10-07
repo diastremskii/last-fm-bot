@@ -3,6 +3,7 @@
 var proxyquire = require('proxyquire');
 var lfmAPIStub = require('./stubs/lfmAPIStub');
 var tgStub = require('./stubs/telegramAPIStub');
+var youtube = require('../modules/storage/youtube');
 
 var lfm = proxyquire('../modules/lfmController', {
     './lfmAPI': lfmAPIStub
@@ -11,6 +12,10 @@ var lfm = proxyquire('../modules/lfmController', {
 
 
 describe('Controller for responses from Last.fm API:', function () {
+    beforeEach(function() {
+      lfmAPIStub.reset();
+      tgStub.reset();
+    });
     describe('getArtistImage', function () {
         it('gets a valid response', function () {
             lfm.getArtistImage('Hypnogaja', tgStub.mockSend);
@@ -49,12 +54,49 @@ describe('Controller for responses from Last.fm API:', function () {
     });
     describe('getTrackInfo', function () {
         it('gets a valid response', function () {
-            lfm.getTrackInfo('KoRn', 'Trash', tgStub.mockSend);
+            lfm.getTrackInfo('Korn', 'Trash', tgStub.mockSend);
 
             expect(tgStub.message).toEqual('Listeners: 274145\nScrobbles: 1456439\n<a href="https://www.last.fm/music/Korn/Issues">Album: Issues</a>\nTags: Nu Metal alternative metal metal Korn rock ');
         });
         it('gets a response with error', function () {
             lfm.getTrackInfo('asddsaasd', 'ads', tgStub.mockSend);
+
+            expect(tgStub.message).toEqual('Track not found');
+        });
+    });
+    describe('getYouTubeLink', function () {
+        it('gets a YouTube link and caches result', function () {
+            lfm.getYouTubeLink('Clawfinger', 'Do What I Say', tgStub.mockSend);
+
+            expect(tgStub.message).toEqual('https://www.youtube.com/watch?v=-1CE4P8qqPE');
+            expect(tgStub.called).toBe(true);
+            expect(lfmAPIStub.downloadFullPage.called).toBe(true);
+            expect(youtube.get('Clawfinger', 'Do What I Say')).toEqual('https://www.youtube.com/watch?v=-1CE4P8qqPE');
+        });
+        it('returns link from cache', function () {
+            lfm.getYouTubeLink('Clawfinger', 'Do What I Say', tgStub.mockSend);
+
+            expect(tgStub.message).toEqual('https://www.youtube.com/watch?v=-1CE4P8qqPE');
+            expect(tgStub.called).toBe(true);
+            expect(lfmAPIStub.downloadFullPage.called).toBe(false);
+        });
+        it('gets a page without YouTube link and caches result', function () {
+            lfm.getYouTubeLink('Korn', 'Trash', tgStub.mockSend);
+
+            expect(tgStub.message).toEqual('No YouTube link found');
+            expect(tgStub.called).toBe(true);
+            expect(lfmAPIStub.downloadFullPage.called).toBe(true);
+            expect(youtube.get('Korn', 'Trash')).toBe('No YouTube link found');
+        });
+        it('returns link from cache', function () {
+            lfm.getYouTubeLink('Korn', 'Trash', tgStub.mockSend);
+
+            expect(tgStub.message).toEqual('No YouTube link found');
+            expect(tgStub.called).toBe(true);
+            expect(lfmAPIStub.downloadFullPage.called).toBe(false);
+        });
+        it('gets a response with error', function () {
+            lfm.getYouTubeLink('asddsaasd', 'ads', tgStub.mockSend);
 
             expect(tgStub.message).toEqual('Track not found');
         });
