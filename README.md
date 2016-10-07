@@ -27,7 +27,7 @@ Hosted on Heroku with free account, so expect slight latency.
     ```
     npm install
     ```
-2. Don't forget to export config variables or set them in config.js
+2. Don't forget to export config variables or set them in config.js (you need only LFM_TOKEN for tests)
 2. Run tests:
     ```
     npm test
