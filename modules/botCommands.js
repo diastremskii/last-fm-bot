@@ -102,13 +102,13 @@ botCommands['/help'] = function (parameters, message) {
         '[] - means what this argument is optional\n \
 /artpic _artist_ - get a picture of an artist\n \
 Try: /artpic Bat For Lashes\n \
-/sa _artist_ - get similar artists\n \
+/sa <i>artist</i> - get similar artists\n \
 Try: /sa ムック\n \
-/track _artist_ - get info about a track for given artist\n \
+/track <i>artist</i> - get info about a track for given artist\n \
 /yb [artist] - get YouTube link for track\n \
 /atracks [artist] - get top tracks for given artist]',
         message.chat.id,
-        'Markdown')
+        'HTML')
 };
 
 botCommands.clearContext = function (fromId) {
