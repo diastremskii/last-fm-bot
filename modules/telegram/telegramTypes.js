@@ -31,7 +31,7 @@ tgTypes.InlineKeyboardMarkup.prototype.newRow = function () {
 };
 
 tgTypes.InlineKeyboardMarkup.prototype._isRowFull = function () {
-    if (this['inline_keyboard'][this._lastRow()] === this._rowWidth()-1) {
+    if (this['inline_keyboard'][this._lastRow()].length === this._rowWidth()) {
         return true;
     };
 };
