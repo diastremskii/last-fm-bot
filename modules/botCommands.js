@@ -113,7 +113,7 @@ botCommands['/help'] = function (parameters, message) {
 Try: /artpic Bat For Lashes\n \
 /sa <i>artist</i> - get similar artists\n \
 Try: /sa ムック\n \
-/track <i>artist</i> - get info about a track for given artist\n \
+/track [artist] - get info about a track for given artist\n \
 /yb [artist] - get YouTube link for track\n \
 /atracks [artist] - get top tracks for given artist]',
         message.chat.id,
