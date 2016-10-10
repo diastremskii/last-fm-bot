@@ -12,6 +12,9 @@ botQueryHandler.answer = function (query, queryData) {
 botQueryHandler.youtube = function (query, queryData) {
     var replyData  = replyQuery.get(queryData.artist, queryData.object, 'tracks');
     lfm.getYouTubeLink(replyData.artist, replyData.object, function (response) {
+        if (!response) {
+            response = 'Sorry, this button is outdated';
+        };
         tg.sendTextMessage(response, query.message.chat.id);
         tg.answerCallbackQuery(query.id);
     });

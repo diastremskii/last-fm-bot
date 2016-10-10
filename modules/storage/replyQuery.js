@@ -65,12 +65,17 @@ replyQuery.add = function (artist, objectName, objectType) {
 
 replyQuery.get = function (hashedArtist, hashedObject, objectType) {
     var artistRecord = replyQuery.artists[hashedArtist];
+    if (!artistRecord) {
+        return;
+    };
     var objectRecord = artistRecord[objectType][hashedObject]
-
+    if (!objectRecord) {
+        return;
+    };
     return {
         artist: artistRecord.name,
         object: objectRecord.name
-    }
+    };
 };
 
 module.exports = replyQuery;
