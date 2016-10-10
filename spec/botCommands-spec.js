@@ -68,7 +68,7 @@ describe('Module containing bot commands', function () {
     });
     describe('/track command (with context)', function () {
         it('gets called with parameter and asks for track', function () {
-            botCommands['/track']('Evanescence', exampleMessage);
+            botCommands.execute('/track', 'Evanescence', exampleMessage);
 
             expect(tgStub.called).toBe(true);
             expect(lfmStub.called).toBe(false);
@@ -83,12 +83,12 @@ describe('Module containing bot commands', function () {
 
         });
         it('gets called without parameter and asks for artist', function () {
-            botCommands.clearContext(exampleMessage.from.id); //Clear context from test above
-            botCommands['/track']('', exampleMessage);
+            botCommands.execute('/track', '', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
+                parameters: [],
                 command: '/track',
                 stage: 'waitForArtist'
             });
@@ -114,8 +114,7 @@ describe('Module containing bot commands', function () {
     });
     describe('/yb command (with context)', function () {
         it('gets called with parameter and asks for track', function () {
-            botCommands.clearContext(exampleMessage.from.id);
-            botCommands['/yb']('Evanescence', exampleMessage);
+            botCommands.execute('/yb', 'Evanescence', exampleMessage);
 
             expect(tgStub.called).toBe(true);
             expect(lfmStub.called).toBe(false);
@@ -130,12 +129,12 @@ describe('Module containing bot commands', function () {
 
         });
         it('gets called without parameter and asks for artist', function () {
-            botCommands.clearContext(exampleMessage.from.id);
-            botCommands['/yb']('', exampleMessage);
+            botCommands.execute('/yb', '', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
+                parameters: [],
                 command: '/yb',
                 stage: 'waitForArtist'
             });
@@ -161,8 +160,7 @@ describe('Module containing bot commands', function () {
     });
     describe('/atracks command (with context)', function () {
         it('gets called with parameter and asks for track', function () {
-            botCommands.clearContext(exampleMessage.from.id);
-            botCommands['/atracks']('Evanescence', exampleMessage);
+            botCommands.execute('/atracks', 'Evanescence', exampleMessage);
 
             expect(tgStub.called).toBe(true);
             expect(lfmStub.called).toBe(false);
@@ -179,12 +177,12 @@ describe('Module containing bot commands', function () {
             expect(lfmStub.called).toBe(true);
         });
         it('gets called without parameter and asks for artist', function () {
-            botCommands.clearContext(exampleMessage.from.id);
-            botCommands['/atracks']('', exampleMessage);
+            botCommands.execute('/atracks', '', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
+                parameters: [],
                 command: '/atracks',
                 stage: 'waitForArtist'
             });

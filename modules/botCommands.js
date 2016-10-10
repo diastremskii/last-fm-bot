@@ -6,19 +6,25 @@ var context = require('./storage/context');
 
 var botCommands = {};
 
+botCommands.contextCommands = ['/track', '/yb', '/atracks'];
+
 botCommands.notACommand = function (message) {
     if (context.hasOwnProperty(message.from.id)) {
         var command =  context[message.from.id].command;
         var stage = context[message.from.id].stage;
         var parameters = context[message.from.id].parameters;
-        if (!parameters) {
-            parameters = message.text;
-        } else {
-            parameters.push(message.text);
-        };
+        context.pushParameters(message.from.id, message.text);
         botCommands[command](parameters, message, stage);
     };
 };
+
+botCommands.execute = function (command, parameters, message) {
+    if (botCommands.contextCommands.indexOf(command) > -1) {
+        context.save(message.from.id, command, 'started');
+        context.pushParameters(message.from.id, parameters);
+    };
+    botCommands[command](parameters, message);
+}
 
 botCommands['/artpic'] = function(parameters, message) {
     if (!parameters) {
@@ -47,11 +53,12 @@ botCommands['/track'] = function (parameters, message, stage) {
     } else {
         if (stage === 'waitForArtist' || !stage) {
             tg.selectiveForceReply('Now send a name of the track please', message);
-            context.save(message.from.id, '/track', 'waitForTrack', parameters);
+            context.save(message.from.id, '/track', 'waitForTrack');
         } else {
             lfm.getTrackInfo(parameters[0], parameters[1], function (response) {
                 tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
             });
+            botCommands.clearContext(message.from.id);
         };
     };
 };
@@ -63,7 +70,7 @@ botCommands['/atracks'] = function (parameters, message, stage) {
     } else {
         if (stage === 'waitForArtist' || !stage) {
             tg.selectiveForceReply('Great! Now select a page number', message);
-            context.save(message.from.id, '/atracks', 'waitForPage', parameters);
+            context.save(message.from.id, '/atracks', 'waitForPage');
         } else {
             if (isNaN(parseInt(parameters[1]))) {
                 tg.selectiveForceReply('Page should be a number', message);
@@ -72,6 +79,7 @@ botCommands['/atracks'] = function (parameters, message, stage) {
                 lfm.getTopTracks(parameters[0], parameters[1], function (response) {
                     tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
                 });
+                botCommands.clearContext(message.from.id);
             };
         };
     };
@@ -84,11 +92,12 @@ botCommands['/yb'] = function (parameters, message, stage) {
     } else {
         if (stage === 'waitForArtist' || !stage) {
             tg.selectiveForceReply('Now send a name of the track please', message);
-            context.save(message.from.id, '/yb', 'waitForTrack', parameters);
+            context.save(message.from.id, '/yb', 'waitForTrack');
         } else {
             lfm.getYouTubeLink(parameters[0], parameters[1], function (response) {
                 tg.sendTextMessage(response, message.chat.id);
             });
+            botCommands.clearContext(message.from.id);
         };
     };
 };
@@ -100,7 +109,7 @@ botCommands['/start'] = function (parameters, message) {
 botCommands['/help'] = function (parameters, message) {
     tg.sendTextMessage(
         '[] - means what this argument is optional\n \
-/artpic _artist_ - get a picture of an artist\n \
+/artpic <i>artist</i> - get a picture of an artist\n \
 Try: /artpic Bat For Lashes\n \
 /sa <i>artist</i> - get similar artists\n \
 Try: /sa ムック\n \

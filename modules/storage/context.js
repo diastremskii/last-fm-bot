@@ -13,19 +13,20 @@ var context = {/* user id */};
 }
 */
 
-context.save = function (userId, command, stage, parameters) {
+context.save = function (userId, command, stage) {
     if (!context[userId]) {
         context[userId] = {};
+        context[userId].parameters = [];
     };
     context[userId].command = command;
     context[userId].stage = stage;
-    if (parameters) {
-        if (!context[userId].parameters) {
-            context[userId].parameters = [];
-        };
-        context[userId].parameters.push(parameters);
-    };
 };
+
+context.pushParameters = function (userId, parameters) {
+    if (parameters) {
+        return context[userId].parameters.push(parameters);
+    };
+}
 
 context.pop = function (userId) {
     return context[userId].parameters.pop();
