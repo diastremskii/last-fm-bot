@@ -76,8 +76,8 @@ botCommands['/atracks'] = function (parameters, message, stage) {
                 tg.selectiveForceReply('Page should be a number', message);
                 context.pop(message.from.id);
             } else {
-                lfm.getTopTracks(parameters[0], parameters[1], function (response) {
-                    tg.sendTextMessage(response, message.chat.id, 'HTML', 1);
+                lfm.getTopTracks(parameters[0], parameters[1], function (response, replyMarkup) {
+                    tg.sendTextMessage(response, message.chat.id, 'HTML', 1, null, replyMarkup);
                 });
                 botCommands.clearContext(message.from.id);
             };

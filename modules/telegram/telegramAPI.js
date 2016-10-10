@@ -18,6 +18,42 @@ tg.setupWebhook = function() {
     });
 };
 
+tg.sendPostRequest =function (postData, method) {
+    var options = {
+        hostname: config.TELEGRAM_BASE_URL,
+        port: 443,
+        path: '/bot' + config.TOKEN + method,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData)
+        }
+    };
+
+    if (process.env.DEBUG === '1') {
+        var req = https.request(options, function (res) {
+            var data = '';
+
+            res.on('data', function (chunk) {
+                data+=chunk;
+            });
+            res.on('end', function () {
+                console.log(postData);
+                console.log(data);
+            });
+        });
+    } else {
+        var req = https.request(options);
+    };
+
+    req.on('error', function(e) {
+        console.log(`Problem with request: ${e.message}`);
+    });
+
+    req.write(postData);
+    req.end();
+};
+
 tg.sendTextMessage = function(text, chatId, parseMode, hidePreview, replyTo, replyMarkup) {
 
     var postData = JSON.stringify({
@@ -29,25 +65,7 @@ tg.sendTextMessage = function(text, chatId, parseMode, hidePreview, replyTo, rep
         reply_markup: replyMarkup || ''
     });
 
-    var options = {
-        hostname: config.TELEGRAM_BASE_URL,
-        port: 443,
-        path: '/bot' + config.TOKEN + '/sendMessage',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postData)
-        }
-    };
-
-    var req = https.request(options);
-
-    req.on('error', function(e) {
-        console.log(`Problem with request: ${e.message}`);
-    });
-
-    req.write(postData);
-    req.end();
+    tg.sendPostRequest(postData, '/sendMessage');
 };
 
 tg.selectiveForceReply = function (text, message, parseMode, hidePreview) {
@@ -62,6 +80,17 @@ tg.selectiveForceReply = function (text, message, parseMode, hidePreview) {
             'selective': true
         }
     );
+};
+
+tg.answerCallbackQuery = function (queryId, text, showAlert, url) {
+    var postData = JSON.stringify({
+        callback_query_id: queryId,
+        text : text || '',
+        show_alert: showAlert || 0,
+        url: url || ''
+    });
+
+    tg.sendPostRequest(postData, '/answerCallbackQuery');
 };
 
 module.exports = tg;

@@ -21,7 +21,7 @@ http.createServer(function (req, res) {
                 console.log(`Bad JSON: ${e.message}`);
                 return;
             };
-            bot.verifyMessage(body);
+            bot.verifyRequest(body);
         } else {
             res.writeHead(401);
         }

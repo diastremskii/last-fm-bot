@@ -4,6 +4,8 @@ var lfmAPI = require('./lfmAPI');
 var config = require('../config');
 var qs = require('querystring');
 var youtube = require('./storage/youtube');
+var tgTypes = require('./telegram/telegramTypes');
+var replyQuery = require('./storage/replyQuery');
 
 var lfm = {};
 
@@ -69,30 +71,33 @@ lfm.getTopTracks = function (artist, page, send) {
             var htmlMarkupTracks = tracks.toptracks.track.map(function (track) {
                 return lfm._addHyperlinkTag(track.url, track.name);
             }).join('\n');
-            send(htmlMarkupTracks);
+            var inlineKeyboard = lfm._createTracksInlineKeyboard(tracks.toptracks.track, 'youtube');
+
+            send(htmlMarkupTracks, inlineKeyboard);
         };
     });
 };
 
 //Not in official API. Dirty.
+// TODO: Change to get youtube link with one request
 lfm.getYouTubeLink = function (artist, track, send) {
-    var songURL = youtube.get(artist, track);
-    if (songURL) {
-        send(songURL);
+    var youtubeLink = youtube.get(artist, track);
+    if (youtubeLink) {
+        send(youtubeLink);
     } else {
         lfmAPI.track.getInfo(artist, track, function (trackInfo) {
             if (trackInfo.error) {
                 send(trackInfo.message);
             } else {
-                songURL=trackInfo.track.url.replace(/https:/, 'http:');
-                lfmAPI.downloadFullPage(songURL, function (body) {
-                    var url = body.match(/data-youtube-url="(.*?)"/);
-                    if (url) {
-                        youtube.put(artist, track, url[1]);
-                        send(url[1]);
+                var lfmLink=trackInfo.track.url.replace(/https:/, 'http:');
+                lfmAPI.downloadFullPage(lfmLink, function (body) {
+                    youtubeLink = body.match(/data-youtube-url="(.*?)"/);
+                    if (youtubeLink) {
+                        youtube.put(artist, track, youtubeLink[1]);
+                        send(youtubeLink[1]);
                     } else {
                         youtube.put(artist, track, null);
-                        send('No YouTube link found')
+                        send('No YouTube link found');
                     };
                 });
             };
@@ -125,6 +130,19 @@ lfm._encodeDots = function (string) {
 
 lfm._getLinkToSimilar = function (artist) {
     return '\n<a href="' + config.LFM_URL + '/music/' + qs.escape(artist) + '/+similar">Find more similar artists</a>';
+};
+
+lfm._createTracksInlineKeyboard = function (tracks, callbackMethod) {
+    var inlineKeyboard = new tgTypes.InlineKeyboardMarkup(2);
+
+    tracks.forEach(function (track) {
+        inlineKeyboard.add(
+            track.name,
+            'callback_data',
+            `${replyQuery.add(track.artist.name, track.name, 'tracks')}&m=${callbackMethod}`
+        )
+    });
+    return inlineKeyboard;
 };
 
 module.exports = lfm;

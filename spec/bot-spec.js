@@ -16,26 +16,26 @@ describe('Main bot logic', function(){
       botCommandsStub.reset();
     });
     it('gets a normal command', function() {
-        bot.verifyMessage(tgRequests.artPic);
+        bot.verifyRequest(tgRequests.artPic);
 
         expect(botCommandsStub.called).toBe(true);
         expect(botCommandsStub.artist).toEqual('The Smashing Pumpkins');
         expect(botCommandsStub.username).toEqual('test');
     });
     it('gets an empty message', function () {
-        bot.verifyMessage(tgRequests.empty);
+        bot.verifyRequest(tgRequests.empty);
 
         expect(botCommandsStub.called).toBe(false);
     });
     it('gets an non-existsing comand', function () {
-        bot.verifyMessage(tgRequests.nonExisting);
+        bot.verifyRequest(tgRequests.nonExisting);
 
         expect(botCommandsStub.called).toBe(false);
         expect(tgStub.chatId).toEqual(1);
         expect(tgStub.message).toEqual('Command /asd does not exist');
     });
     it('gets called with username (i.e. in group)', function () {
-        bot.verifyMessage(tgRequests.withUsername);
+        bot.verifyRequest(tgRequests.withUsername);
 
         expect(botCommandsStub.called).toBe(true);
         expect(botCommandsStub.artist).toEqual('Foo Fighters');

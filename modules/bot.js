@@ -3,11 +3,19 @@
 var config = require('../config');
 var tg = require('./telegram/telegramAPI');
 var botCommands = require('./botCommands')
+var botQueryHandler = require('./botQueryHandler')
 
 var bot = {};
 
-bot.verifyMessage = function(body) {
-    var message = body.message;
+bot.verifyRequest = function(body) {
+    if (body.message) {
+        bot.verifyMessage(body.message);
+    } else if (body.callback_query) {
+        bot.verifyCallbackQuery(body.callback_query);
+    };
+};
+
+bot.verifyMessage = function (message) {
     if (bot.containsCommand(message)) {
         message.text = bot.normalizeMessage(message.text);
         var parsed = bot.parseCommand(message.text);
@@ -16,7 +24,14 @@ bot.verifyMessage = function(body) {
         }
     } else {
         botCommands.notACommand(message);
-    }
+    };
+};
+
+bot.verifyCallbackQuery = function (query) {
+    if (query.data) {
+        var queryData = bot.parseQueryData(query.data);
+        botQueryHandler.answer(query, queryData);
+    };
 };
 
 bot.normalizeMessage = function(text) {
@@ -50,6 +65,17 @@ bot.containsCommand = function(message) {
         return false;
     } else {
         return message.text.indexOf('/') === 0;
+    };
+};
+
+bot.parseQueryData = function (queryData) {
+    var artist = queryData.substr(queryData.indexOf('&a=')+3, 24);
+    var object = queryData.substr(queryData.indexOf('&o=')+3, 24);
+    var method = queryData.slice(queryData.indexOf('&m=')+3);
+    return {
+        artist: artist,
+        object: object,
+        method: method
     };
 };
 

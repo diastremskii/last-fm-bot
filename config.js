@@ -16,6 +16,6 @@ config.LFM_API_URL = 'http://ws.audioscrobbler.com/2.0/?method=';
 config.LFM_TOKEN = process.env.LFM_TOKEN;
 config.LFM_AUTOCORRECT = 1;
 config.SIMILAR_LIMIT = 20;
-config.TOP_TRACKS_LIMIT = 9;
+config.TOP_TRACKS_LIMIT = 8;
 
 module.exports = config;
