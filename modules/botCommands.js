@@ -11,10 +11,10 @@ botCommands.GENERIC_COMMANDS = ['/help', '/start'];
 botCommands.notACommand = function (message) {
     if (context.hasOwnProperty(message.from.id)) {
         var command =    context[message.from.id].command;
-        var stage = context[message.from.id].stage;
+        var stage = ++context[message.from.id].stage;
         var parameters = context[message.from.id].parameters;
         context.pushParameters(message.from.id, message.text);
-        botCommands[command](parameters, message, ++stage);
+        botCommands[command](parameters, message, stage);
     };
 };
 
@@ -47,7 +47,7 @@ botCommands['/artpic'] = function(parameters, message, stage) {
     };
 };
 
-botCommands['/sa'] = function (parameters, message) {
+botCommands['/sa'] = function (parameters, message, stage) {
     switch (stage) {
         case 0:
             tg.selectiveForceReply('Send me the artist name please', message);
@@ -87,6 +87,11 @@ botCommands['/atracks'] = function (parameters, message, stage) {
             tg.selectiveForceReply('Great! Now select a page number', message);
             break;
         case 2:
+            if (isNaN(parseInt(parameters[1]))) {
+                tg.selectiveForceReply('Page should be a number', message);
+                context.pop(message.from.id);
+                return;
+            };
             lfm.getTopTracks(parameters[0], parameters[1], function (response, replyMarkup) {
                 tg.sendTextMessage(response, message.chat.id, 'HTML', 1, null, replyMarkup);
             });

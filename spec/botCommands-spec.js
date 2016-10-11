@@ -38,14 +38,14 @@ describe('Module containing bot commands', function () {
     });
     describe('/artpic command', function () {
         it('gets called with parameter', function () {
-            botCommands['/artpic']('Zaz', exampleMessage);
+            botCommands.execute('/artpic', 'Zaz', exampleMessage);
 
             expect(tgStub.called).toBe(true);
             expect(tgStub.message).toEqual('Zaz');
             expect(tgStub.chatId).toEqual(1);
         });
-        it('gets called without parameter', function () {
-            botCommands['/artpic']('', exampleMessage);
+        it('gets called without parameter and asks for track', function () {
+            botCommands.execute('/artpic', '', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);
@@ -53,14 +53,14 @@ describe('Module containing bot commands', function () {
     });
     describe('/sa command', function () {
         it('gets called with parameter', function () {
-            botCommands['/sa']('Depeche Mode', exampleMessage);
+            botCommands.execute('/sa', 'Depeche Mode', exampleMessage);
 
             expect(tgStub.called).toBe(true);
             expect(tgStub.message).toEqual('Depeche Mode');
             expect(tgStub.chatId).toEqual(1);
         });
-        it('gets called without parameter', function () {
-            botCommands['/sa']('', exampleMessage);
+        it('gets called without parameter and asks for track', function () {
+            botCommands.execute('/sa', '', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);
@@ -90,7 +90,7 @@ describe('Module containing bot commands', function () {
             expect(context[1]).toEqual({
                 parameters: [],
                 command: '/track',
-                stage: 'waitForArtist'
+                stage: 0
             });
         });
         it('gets response in context of waiting artist', function () {
@@ -100,7 +100,7 @@ describe('Module containing bot commands', function () {
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
                 command: '/track',
-                stage: 'waitForTrack',
+                stage: 1,
                 parameters: ['test']
             });
         });
@@ -136,7 +136,7 @@ describe('Module containing bot commands', function () {
             expect(context[1]).toEqual({
                 parameters: [],
                 command: '/yb',
-                stage: 'waitForArtist'
+                stage: 0
             });
         });
         it('gets response in context of waiting artist', function () {
@@ -146,7 +146,7 @@ describe('Module containing bot commands', function () {
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
                 command: '/yb',
-                stage: 'waitForTrack',
+                stage: 1,
                 parameters: ['test']
             });
         });
@@ -166,7 +166,7 @@ describe('Module containing bot commands', function () {
             expect(lfmStub.called).toBe(false);
             expect(context[1]).toEqual({
                 command: '/atracks',
-                stage: 'waitForPage',
+                stage: 1,
                 parameters: ['Evanescence']
             });
         });
@@ -184,7 +184,7 @@ describe('Module containing bot commands', function () {
             expect(context[1]).toEqual({
                 parameters: [],
                 command: '/atracks',
-                stage: 'waitForArtist'
+                stage: 0
             });
         });
         it('gets response in context of waiting artist', function () {
@@ -194,7 +194,7 @@ describe('Module containing bot commands', function () {
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
                 command: '/atracks',
-                stage: 'waitForPage',
+                stage: 1,
                 parameters: ['test']
             });
         });
@@ -205,7 +205,7 @@ describe('Module containing bot commands', function () {
             expect(tgStub.called).toEqual(true);
             expect(context[1]).toEqual({
                 command: '/atracks',
-                stage: 'waitForPage',
+                stage: 1,
                 parameters: ['test']
             });
         });

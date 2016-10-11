@@ -29,6 +29,7 @@ context.pushParameters = function (userId, parameters) {
 }
 
 context.pop = function (userId) {
+    --context[userId].stage;
     return context[userId].parameters.pop();
 };
 
