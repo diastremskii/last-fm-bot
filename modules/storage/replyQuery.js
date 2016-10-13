@@ -86,6 +86,10 @@ replyQuery.get = function (hashedArtist, hashedObject, objectType) {
     };
 };
 
+replyQuery.getArtist = function (hashedArtist) {
+    return replyQuery.artists[hashedArtist];
+};
+
 replyQuery._base64urlEncode = function (string) {
     var replacements = [
         [/\+/g, '-'],

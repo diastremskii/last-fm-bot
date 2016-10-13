@@ -28,4 +28,16 @@ botQueryHandler.youtube = function (query, queryData) {
     });
 };
 
+botQueryHandler.prevPage = function () {
+
+};
+
+botQueryHandler.nextPage = function () {
+
+};
+
+botQueryHandler.goToPage = function () {
+
+};
+
 module.exports = botQueryHandler;

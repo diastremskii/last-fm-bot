@@ -2,10 +2,8 @@
 
 var lfmAPI = require('./lfmAPI');
 var config = require('../config');
-var qs = require('querystring');
 var youtube = require('./storage/youtube');
-var tgTypes = require('./telegram/telegramTypes');
-var replyQuery = require('./storage/replyQuery');
+var lfmUtils = require('./lfmUtils');
 
 var lfm = {};
 
@@ -29,8 +27,8 @@ lfm.getSimilarArtists = function (artist, send) {
             send('No similar artists');
         } else {
             var htmlMarkupArtists = artists.similarartists.artist.map( function(artist) {
-                return lfm._addHyperlinkTag(artist.url, artist.name);
-            }).concat(lfm._getLinkToSimilar(artist)).join('\n');
+                return lfmUtils.addHyperlinkTag(artist.url, artist.name);
+            }).concat(lfmUtils.getLinkToSimilar(artist)).join('\n');
             send(htmlMarkupArtists);
         }
     });
@@ -45,7 +43,7 @@ lfm.getTrackInfo = function (artist, track, send) {
             var trackInfo = 'Listeners: ' + track.listeners;
             trackInfo += '\nScrobbles: ' + track.playcount;
             if (track.album) {
-                trackInfo += '\n' + lfm._addHyperlinkTag(track.album.url, 'Album: ' + track.album.title);
+                trackInfo += '\n' + lfmUtils.addHyperlinkTag(track.album.url, 'Album: ' + track.album.title);
             };
             if (track.toptags.tag.length > 0) {
                 trackInfo += '\nTags: ';
@@ -69,9 +67,10 @@ lfm.getTopTracks = function (artist, page, send) {
             send('No tracks found. Try lower page number');
         } else {
             var htmlMarkupTracks = tracks.toptracks.track.map(function (track) {
-                return lfm._addHyperlinkTag(track.url, track.name);
+                return lfmUtils.addHyperlinkTag(track.url, track.name);
             }).join('\n');
-            var inlineKeyboard = lfm._createTracksInlineKeyboard(tracks.toptracks.track, 'youtube');
+            var inlineKeyboard = lfmUtils.createTracksInlineKeyboard(tracks.toptracks.track, 'youtube');
+            inlineKeyboard = lfmUtils.addNavKeyboard(artist, 1, inlineKeyboard);
 
             send(htmlMarkupTracks, inlineKeyboard);
         };
@@ -103,44 +102,6 @@ lfm.getYouTubeLink = function (artist, track, send) {
             };
         });
     }
-};
-
-lfm._addHyperlinkTag = function (url, description) {
-    return '<a href="' + lfm._encodeDots(url) + '">' + lfm._escapeHTML(description) + '</a>';
-};
-
-lfm._escapeHTML = function (string) {
-    var replacements = [
-        [ /\&/g, '&amp;'],
-        [ /\</g, '&lt;' ],
-        [ /\>/g, '&gt;' ]
-    ];
-    return replacements.reduce(
-        function(string, replacement) {
-            return string.replace(replacement[0], replacement[1])
-        },
-        string);
-};
-
-lfm._encodeDots = function (string) {
-    //String returned by Lfm already escaped, but we need to
-    //replace dots after domain for Telegram to correctly parse it
-    return config.LFM_URL + string.replace(config.LFM_URL, '').replace(/\./g, '%2E');
-};
-
-lfm._getLinkToSimilar = function (artist) {
-    return '\n<a href="' + config.LFM_URL + '/music/' + qs.escape(artist) + '/+similar">Find more similar artists</a>';
-};
-
-lfm._createTracksInlineKeyboard = function (tracks, callbackMethod) {
-    var inlineKeyboard = new tgTypes.InlineKeyboardMarkup(2);
-
-    tracks.forEach(function (track) {
-        var callbackData = replyQuery.add(track.artist.name, track.name, 'tracks');
-        callbackData.m = callbackMethod;
-        inlineKeyboard.add(track.name, 'callback_data', qs.stringify(callbackData));
-    });
-    return inlineKeyboard;
 };
 
 module.exports = lfm;

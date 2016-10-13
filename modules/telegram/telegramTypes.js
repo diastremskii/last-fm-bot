@@ -26,6 +26,10 @@ tgTypes.InlineKeyboardMarkup.prototype.newRow = function () {
     return this;
 };
 
+tgTypes.InlineKeyboardMarkup.prototype.setWidth =function (rowWidth) {
+    this[_rowWidth] = (rowWidth > 8) ? 8 : rowWidth;
+};
+
 tgTypes.InlineKeyboardMarkup.prototype._isRowFull = function () {
     if (this['inline_keyboard'][this._lastRow()].length === this[_rowWidth]) {
         return true;
