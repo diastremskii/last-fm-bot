@@ -28,7 +28,7 @@ botQueryHandler.youtube = function (query, queryData, answer) {
     });
 };
 
-botQueryHandler.prevPage = function (query, queryData) {
+botQueryHandler.prevPage = function (query, queryData, answer) {
     var artist = replyQuery.getArtist(queryData.a);
     if (!artist) {
         botQueryHandler._outdatedButton(query);
@@ -44,7 +44,7 @@ botQueryHandler.prevPage = function (query, queryData) {
     });
 };
 
-botQueryHandler.nextPage = function (query, queryData) {
+botQueryHandler.nextPage = function (query, queryData, answer) {
     var artist = replyQuery.getArtist(queryData.a);
     if (!artist) {
         botQueryHandler._outdatedButton(query);
