@@ -36,16 +36,16 @@ describe('Module containing bot commands', function () {
         tgStub.reset();
         lfmStub.reset();
     });
-    describe('/artpic command', function () {
+    describe('/artist command', function () {
         it('gets called with parameter', function () {
-            botCommands.execute('/artpic', 'Zaz', exampleMessage);
+            botCommands.execute('/artist', 'Zaz', exampleMessage);
 
             expect(tgStub.called).toBe(true);
             expect(tgStub.message).toEqual('Zaz');
             expect(tgStub.chatId).toEqual(1);
         });
         it('gets called without parameter and asks for track', function () {
-            botCommands.execute('/artpic', '', exampleMessage);
+            botCommands.execute('/artist', '', exampleMessage);
 
             expect(lfmStub.called).toBe(false);
             expect(tgStub.called).toEqual(true);

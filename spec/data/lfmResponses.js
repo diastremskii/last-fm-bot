@@ -298,6 +298,19 @@ responses.artist.getInfoNoImage = {
                 "size":""
             }
         ],
+        stats: {
+            listeners: "7",
+            playcount: "11"
+        },
+        similar: {
+            artist: []
+        },
+        tags: {
+            tag: []
+        },
+        bio: {
+            summary: ' <a href="https://www.last.fm/music/asddsa">Read more on Last.fm</a>'
+        }
     }
 };
 

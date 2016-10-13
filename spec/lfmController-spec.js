@@ -18,17 +18,17 @@ describe('Controller for responses from Last.fm API:', function () {
     });
     describe('getArtistImage', function () {
         it('gets a valid response', function () {
-            lfm.getArtistImage('Hypnogaja', tgStub.mockSend);
+            lfm.getArtistInfo('Hypnogaja', tgStub.mockSend);
 
-            expect(tgStub.message).toEqual('https://lastfm-img2.akamaized.net/i/u/ee0cdc856bed4e7ba88bc8e14dc04296.png');
+            expect(tgStub.message).toEqual('Listeners: 61352\nScrobbles: 1637058\nSimilar artists: <a href="https://www.last.fm/music/Mushmellow">Mushmellow</a> <a href="https://www.last.fm/music/Renegade+Five">Renegade Five</a> <a href="https://www.last.fm/music/Memory+of+a+Melody">Memory of a Melody</a> <a href="https://www.last.fm/music/Emphatic">Emphatic</a> <a href="https://www.last.fm/music/Evans+Blue">Evans Blue</a> \nTags: alternative rock hard rock alternative metal alternative rock ');
         });
-        it('gets a response without image URL', function () {
-            lfm.getArtistImage('asddsa', tgStub.mockSend);
+        it('gets a response with only general info', function () {
+            lfm.getArtistInfo('asddsa', tgStub.mockSend);
 
-            expect(tgStub.message).toEqual('This artist does not have an image');
+            expect(tgStub.message).toEqual('Listeners: 7\nScrobbles: 11\nInfo:  <a href="https://www.last.fm/music/asddsa">Read more on Last.fm</a>');
         });
         it('gets a response with error', function () {
-            lfm.getArtistImage('asddsaasd', tgStub.mockSend);
+            lfm.getArtistInfo('asddsaasd', tgStub.mockSend);
 
             expect(tgStub.message).toEqual('The artist you supplied could not be found');
         });

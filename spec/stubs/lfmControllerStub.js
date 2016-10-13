@@ -2,7 +2,7 @@
 
 var lfm = {};
 
-lfm.getArtistImage = function(artist, send) {
+lfm.getArtistInfo = function(artist, send) {
     lfm.called = true;
     send(artist);
 };
