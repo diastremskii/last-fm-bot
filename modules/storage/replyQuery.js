@@ -31,6 +31,10 @@ replyQuery.artists = { /*Key - Base64 MD5 from artist name */ };
 replyQuery.add = function (artist, objectName, objectType) {
     var hashedArtist = crypto.createHash('md5').update(artist).digest('base64');
     var hashedObject = crypto.createHash('md5').update(objectName).digest('base64');
+    // https://tools.ietf.org/html/rfc4648#page-7
+    // https://en.wikipedia.org/wiki/Base64#URL_applications
+    hashedArtist = replyQuery._base64urlEncode(hashedArtist);
+    hashedObject = replyQuery._base64urlEncode(hashedObject);
     var callbackData = '&a=' + hashedArtist + '&o=' + hashedObject;
     var artists = replyQuery.artists;
 
@@ -76,6 +80,31 @@ replyQuery.get = function (hashedArtist, hashedObject, objectType) {
         artist: artistRecord.name,
         object: objectRecord.name
     };
+};
+
+replyQuery._base64urlEncode = function (string) {
+    var replacements = [
+        [/\+/g, '-'],
+        [/\//g, '_'],
+        [/=/g, ''] //MD5 always have same length, so it's safe to remove padding
+    ];
+    return replacements.reduce(
+        function(string, replacement) {
+            return string.replace(replacement[0], replacement[1])
+        },
+        string);
+};
+
+replyQuery._base64urlDecode = function (string) {
+    var replacements = [
+        [/\-/g, '+'],
+        [/_/g, '/']
+    ];
+    return replacements.reduce(
+        function(string, replacement) {
+            return string.replace(replacement[0], replacement[1])
+        },
+        string + '=='); //Place padding back
 };
 
 module.exports = replyQuery;
