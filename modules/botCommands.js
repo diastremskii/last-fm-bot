@@ -34,14 +34,14 @@ botCommands.execute = function (command, parameters, message) {
     botCommands[command](parameters, message, stage);
 };
 
-botCommands['/artpic'] = function(parameters, message, stage) {
+botCommands['/artist'] = function(parameters, message, stage) {
     switch (stage) {
         case 0:
             tg.selectiveForceReply('Send me the artist name please', message);
             break;
         case 1:
-            lfm.getArtistImage(parameters, function (response) {
-                tg.sendTextMessage(response, message.chat.id);
+            lfm.getArtistInfo(parameters, function (response, hidePreview) {
+                tg.sendTextMessage(response, message.chat.id, 'HTML', hidePreview);
             });
             botCommands.clearContext(message.from.id);
             break;
