@@ -7,15 +7,34 @@ var lfmUtils = require('./lfmUtils');
 
 var lfm = {};
 
-lfm.getArtistImage = function(artist, send) {
-    lfmAPI.artist.getInfo(artist, function(artistInfo) {
-        if (artistInfo.error) {
-            send(artistInfo.message)
-        } else if (artistInfo.artist.image[4]['#text'] === ''){
-            send('This artist does not have an image');
-        } else {
-            send(artistInfo.artist.image[4]['#text']);
+lfm.getArtistInfo = function(artist, send) {
+    lfmAPI.artist.getInfo(artist, function(artist) {
+        if (artist.error) {
+            return send(artist.message)
         };
+        artist = artist.artist;
+        if (artist.image[4]['#text']){
+            send(artist.image[4]['#text'], 0);
+        };
+        var artistInfo = 'Listeners: ' + artist.stats.listeners;
+        artistInfo += '\nScrobbles: ' + artist.stats.playcount;
+        if (artist.similar.artist.length > 0) {
+            artistInfo += '\nSimilar artists: ';
+            artist.similar.artist.forEach( function (artist) {
+                artistInfo += lfmUtils.addHyperlinkTag(artist.url, artist.name);
+                artistInfo += ' ';
+            });
+        };
+        if (artist.tags.tag.length > 0) {
+            artistInfo += '\nTags: ';
+            artist.tags.tag.forEach( function (tag) {
+                artistInfo += tag.name + ' ';
+            });
+        };
+        if (artist.bio.summary) {
+            artistInfo += '\nInfo: ' + artist.bio.summary;
+        };
+        send(artistInfo, 1);
     });
 };
 
