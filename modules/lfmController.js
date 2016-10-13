@@ -136,11 +136,9 @@ lfm._createTracksInlineKeyboard = function (tracks, callbackMethod) {
     var inlineKeyboard = new tgTypes.InlineKeyboardMarkup(2);
 
     tracks.forEach(function (track) {
-        inlineKeyboard.add(
-            track.name,
-            'callback_data',
-            `${replyQuery.add(track.artist.name, track.name, 'tracks')}&m=${callbackMethod}`
-        )
+        var callbackData = replyQuery.add(track.artist.name, track.name, 'tracks');
+        callbackData.m = callbackMethod;
+        inlineKeyboard.add(track.name, 'callback_data', qs.stringify(callbackData));
     });
     return inlineKeyboard;
 };

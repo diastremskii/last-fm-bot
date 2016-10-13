@@ -5,12 +5,19 @@ var tg = require('./telegram/telegramAPI');
 var replyQuery = require('./storage/replyQuery');
 var lfm = require('./lfmController')
 
+/*
+  queryData.a - artist
+  queryData.o - object (track/album)
+  queryData.m - method
+  short because of Telegram 64 bytes limit
+*/
+
 botQueryHandler.answer = function (query, queryData) {
-    botQueryHandler[queryData.method](query, queryData);
+    botQueryHandler[queryData.m](query, queryData);
 };
 
 botQueryHandler.youtube = function (query, queryData) {
-    var replyData  = replyQuery.get(queryData.artist, queryData.object, 'tracks');
+    var replyData  = replyQuery.get(queryData.a, queryData.o, 'tracks');
     if (!replyData) {
         tg.answerCallbackQuery(query.id);
         return tg.sendTextMessage('Sorry, this button is outdated', query.message.chat.id);

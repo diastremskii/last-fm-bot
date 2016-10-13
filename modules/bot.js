@@ -4,6 +4,7 @@ var config = require('../config');
 var tg = require('./telegram/telegramAPI');
 var botCommands = require('./botCommands')
 var botQueryHandler = require('./botQueryHandler')
+var qs = require('querystring');
 
 var bot = {};
 
@@ -29,8 +30,7 @@ bot.verifyMessage = function (message) {
 
 bot.verifyCallbackQuery = function (query) {
     if (query.data) {
-        var queryData = bot.parseQueryData(query.data);
-        botQueryHandler.answer(query, queryData);
+        botQueryHandler.answer(query, qs.parse(query.data));
     };
 };
 
@@ -65,17 +65,6 @@ bot.containsCommand = function(message) {
         return false;
     } else {
         return message.text.indexOf('/') === 0;
-    };
-};
-
-bot.parseQueryData = function (queryData) {
-    var artist = queryData.substr(queryData.indexOf('&a=')+3, 24);
-    var object = queryData.substr(queryData.indexOf('&o=')+3, 24);
-    var method = queryData.slice(queryData.indexOf('&m=')+3);
-    return {
-        artist: artist,
-        object: object,
-        method: method
     };
 };
 

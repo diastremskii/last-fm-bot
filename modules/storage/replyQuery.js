@@ -2,6 +2,7 @@
 
 var crypto = require('crypto');
 var replyQuery = {};
+var qs = require('querystring');
 
 //Maximum allowed size for button callback data - 64 bytes
 //MD5 in Base64 - 24 bytes
@@ -35,7 +36,10 @@ replyQuery.add = function (artist, objectName, objectType) {
     // https://en.wikipedia.org/wiki/Base64#URL_applications
     hashedArtist = replyQuery._base64urlEncode(hashedArtist);
     hashedObject = replyQuery._base64urlEncode(hashedObject);
-    var callbackData = '&a=' + hashedArtist + '&o=' + hashedObject;
+    var callbackData = {
+        a: hashedArtist,
+        o: hashedObject
+    };
     var artists = replyQuery.artists;
 
     if (!artists[hashedArtist]) {
