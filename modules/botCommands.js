@@ -19,6 +19,7 @@ botCommands.notACommand = function (message) {
 };
 
 botCommands.execute = function (command, parameters, message) {
+    botCommands.clearContext(message.from.id);
     if (botCommands.GENERIC_COMMANDS.indexOf(command) > -1) {
         return botCommands[command](parameters, message, stage);
     };

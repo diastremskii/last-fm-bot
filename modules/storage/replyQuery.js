@@ -86,8 +86,12 @@ replyQuery.get = function (hashedArtist, hashedObject, objectType) {
     };
 };
 
-replyQuery.getArtist = function (hashedArtist) {
-    return replyQuery.artists[hashedArtist];
+replyQuery.getArtist = function (artist) {
+    var hashedArtist = crypto.createHash('md5').update(artist).digest('base64');
+    hashedArtist = replyQuery._base64urlEncode(hashedArtist);
+    if (replyQuery.artists[hashedArtist]) {
+        return replyQuery.artists[hashedArtist].name;
+    };
 };
 
 replyQuery._base64urlEncode = function (string) {

@@ -93,4 +93,18 @@ tg.answerCallbackQuery = function (queryId, text, showAlert, url) {
     tg.sendPostRequest(postData, '/answerCallbackQuery');
 };
 
+tg.editMessageText =function (chatId, messageId, inlineMessageId, text, parseMode, hidePreview, replyMarkup) {
+    var postData = JSON.stringify({
+        chat_id: chatId || '',
+        message_id: messageId || '',
+        inline_message_id: inlineMessageId || '',
+        text: text,
+        parse_mode: parseMode || '',
+        disable_web_page_preview: hidePreview || 0,
+        reply_markup: replyMarkup || ''
+    });
+
+    tg.sendPostRequest(postData, '/editMessageText');
+}
+
 module.exports = tg;

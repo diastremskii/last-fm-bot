@@ -62,18 +62,20 @@ lfm.getTrackInfo = function (artist, track, send) {
 lfm.getTopTracks = function (artist, page, send) {
     lfmAPI.artist.getTopTracks(artist, page, function (tracks) {
         if (tracks.error) {
-            send(tracks.message);
-        } else if (tracks.toptracks.track.length === 0) {
-            send('No tracks found. Try lower page number');
+            return send(tracks.message);
+        };
+        var htmlMarkupTracks;
+        if (tracks.toptracks.track.length === 0) {
+            htmlMarkupTracks = 'No tracks found. Try lower page number';
         } else {
-            var htmlMarkupTracks = tracks.toptracks.track.map(function (track) {
+            htmlMarkupTracks = tracks.toptracks.track.map(function (track) {
                 return lfmUtils.addHyperlinkTag(track.url, track.name);
             }).join('\n');
-            var inlineKeyboard = lfmUtils.createTracksInlineKeyboard(tracks.toptracks.track, 'youtube');
-            inlineKeyboard = lfmUtils.addNavKeyboard(artist, 1, inlineKeyboard);
-
-            send(htmlMarkupTracks, inlineKeyboard);
         };
+        var inlineKeyboard = lfmUtils.createTracksInlineKeyboard(tracks.toptracks.track, 'youtube');
+        inlineKeyboard = lfmUtils.addNavKeyboard(artist, page, inlineKeyboard);
+
+        send(htmlMarkupTracks, inlineKeyboard);
     });
 };
 
