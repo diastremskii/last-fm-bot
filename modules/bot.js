@@ -30,7 +30,7 @@ bot.verifyMessage = function (message) {
 
 bot.verifyCallbackQuery = function (query) {
     if (query.data) {
-        botQueryHandler.answer(query, qs.parse(query.data));
+        botQueryHandler.execute(query, qs.parse(query.data));
     };
 };
 

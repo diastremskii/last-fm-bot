@@ -47,10 +47,7 @@ lfmUtils.createTracksInlineKeyboard = function (tracks, callbackMethod) {
 
 lfmUtils.addNavKeyboard = function (artist, currentPage, inlineKeyboard) {
     if (!inlineKeyboard) {
-        var inlineKeyboard = new tgTypes.InlineKeyboardMarkup(3);
-    } else {
-        inlineKeyboard.newRow();
-        inlineKeyboard.setWidth(3);
+        var inlineKeyboard = new tgTypes.InlineKeyboardMarkup(2);
     };
     var callbackData = {
         a: replyQuery.getArtist(artist),
@@ -58,9 +55,6 @@ lfmUtils.addNavKeyboard = function (artist, currentPage, inlineKeyboard) {
     };
     callbackData.m = 'prevPage';
     inlineKeyboard.add('⬅️', 'callback_data', qs.stringify(callbackData));
-
-    callbackData.m = 'goToPage';
-    inlineKeyboard.add('Go to page...', 'callback_data', qs.stringify(callbackData));
 
     callbackData.m = 'nextPage';
     inlineKeyboard.add('➡️', 'callback_data', qs.stringify(callbackData));
