@@ -125,8 +125,13 @@ botCommands['/random'] = function (parameters, message, stage) {
             tg.selectiveForceReply('Send me a tag please', message);
             break;
         case 1:
+            var i = 0;
             var send = function (response) {
                 if (response === 'No YouTube link found') {
+                    if (++i === 5) {
+                        return send('Sorry, no YouTube link in five songs.\n' +
+                            'Try another again or try another tag');
+                    };
                     send('No YouTube link for that one, trying next');
                     return getRandomSongLink();
                 };
@@ -158,7 +163,7 @@ Try: /sa ムック\n \
 /track [artist] - get info about a track for given artist\n \
 /yb [artist] - get YouTube link for track\n \
 /atracks [artist] - get top tracks for given artist\n \
-/random [tag] - get random song by tag]',
+/random [tag] - get random song by tag',
         message.chat.id,
         'HTML')
 };
