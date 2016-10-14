@@ -130,7 +130,7 @@ botCommands['/random'] = function (parameters, message, stage) {
                 if (response === 'No YouTube link found') {
                     if (++i === 5) {
                         return send('Sorry, no YouTube link in five songs.\n' +
-                            'Try another again or try another tag');
+                            'Try again or try another tag');
                     };
                     send('No YouTube link for that one, trying next');
                     return getRandomSongLink();
