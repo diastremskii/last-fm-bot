@@ -8,6 +8,7 @@ var lfmAPI = {};
 
 lfmAPI.artist = {};
 lfmAPI.track = {};
+lfmAPI.tag = {};
 
 lfmAPI.executeMethod = function (method, options, callback) {
     http.get(config.LFM_API_URL + method + options + '&api_key=' + config.LFM_TOKEN
@@ -77,6 +78,14 @@ lfmAPI.track.getInfo = function (artist, track, callback) {
     lfmAPI.executeMethod(
         'track.getinfo',
         '&artist=' + qs.escape(artist) + '&track=' + qs.escape(track) + '&autocorrect=' +  config.LFM_AUTOCORRECT,
+        callback
+    );
+};
+
+lfmAPI.tag.getTopTracks = function (tag, page, limit, callback) {
+    lfmAPI.executeMethod(
+        'tag.gettoptracks',
+        '&tag=' + qs.escape(tag) + '&page=' + page + '&limit=' + limit,
         callback
     );
 };

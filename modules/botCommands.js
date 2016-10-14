@@ -119,6 +119,31 @@ botCommands['/yb'] = function (parameters, message, stage) {
     };
 };
 
+botCommands['/random'] = function (parameters, message, stage) {
+    switch (stage) {
+        case 0:
+            tg.selectiveForceReply('Send me a tag please', message);
+            break;
+        case 1:
+            var send = function (response) {
+                if (response === 'No YouTube link found') {
+                    send('No YouTube link for that one, trying next');
+                    return getRandomSongLink();
+                };
+                tg.sendTextMessage(response, message.chat.id);
+            };
+            var getRandomSongLink = function () {
+                lfm.getRandomSong(parameters, function(track) {
+                    lfm.getYouTubeLink(track.artist, track.name, send)
+                }, send);
+            };
+
+            getRandomSongLink();
+            botCommands.clearContext(message.from.id);
+            break;
+    };
+};
+
 botCommands['/start'] = function (parameters, message) {
     tg.sendTextMessage('Howdy! This bot can provide you interaction with Last.fm via Telegram. Try /help to learn how to use the bot', message.chat.id);
 };
@@ -132,7 +157,8 @@ Try: /artpic Bat For Lashes\n \
 Try: /sa ムック\n \
 /track [artist] - get info about a track for given artist\n \
 /yb [artist] - get YouTube link for track\n \
-/atracks [artist] - get top tracks for given artist]',
+/atracks [artist] - get top tracks for given artist\n \
+/random [tag] - get random song by tag]',
         message.chat.id,
         'HTML')
 };

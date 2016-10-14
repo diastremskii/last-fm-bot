@@ -6,6 +6,7 @@ var youtube = require('./storage/youtube');
 var lfmUtils = require('./lfmUtils');
 
 var lfm = {};
+lfm.totalTracks = {};
 
 lfm.getArtistInfo = function(artist, send) {
     lfmAPI.artist.getInfo(artist, function(artist) {
@@ -123,6 +124,51 @@ lfm.getYouTubeLink = function (artist, track, send) {
             };
         });
     }
+};
+
+lfm.getTotalTracks = function (tag, callback, send) {
+    if (lfm.totalTracks[tag]) {
+        return callback(lfm.totalTracks[tag]);
+    };
+    lfmAPI.tag.getTopTracks(tag, 1, 1, function (tracks) {
+        var totalTracks = tracks.tracks['@attr'].total;
+        if (totalTracks === 0) {
+            return send('No songs with this tag');
+        };
+        //Last.fm sends wrong total (wrong by a lot), so division by 3 should cut off all empty responses
+        totalTracks /= 3;
+        //If number of tracks still more than 10k - most likely there is an error
+        if (totalTracks > 10000) {
+            totalTracks = 10000;
+        };
+        lfm.totalTracks[tag] = totalTracks;
+        callback(lfm.totalTracks[tag]);
+    });
+};
+
+lfm.getRandomTrackNumber = function (tag, callback, send) {
+    lfm.getTotalTracks(tag, function (totalTracks) {
+        var trackNum = Math.ceil(Math.random() * totalTracks);
+        callback(trackNum);
+    }, send);
+};
+
+lfm.getRandomSong = function (tag, callback, send) {
+    lfm.getRandomTrackNumber(tag, function (trackNum) {
+        lfmAPI.tag.getTopTracks(tag, trackNum, 1, function (tracks) {
+            if (tracks.tracks.track.length === 0) {
+                //Empty response because of Last.fm bug
+                //Try to get normal response
+                return lfm.getRandomSong(tag, callback, send);
+            };
+            var track = {
+                artist: tracks.tracks.track[0].artist.name,
+                name: tracks.tracks.track[0].name
+            };
+            send(`Your song: ${track.artist} — ${track.name}`)
+            callback(track);
+        });
+    });
 };
 
 module.exports = lfm;
