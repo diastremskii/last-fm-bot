@@ -132,7 +132,7 @@ lfm.getTotalTracks = function (tag, callback, send) {
     };
     lfmAPI.tag.getTopTracks(tag, 1, 1, function (tracks) {
         var totalTracks = tracks.tracks['@attr'].total;
-        if (totalTracks === 0) {
+        if (totalTracks === '0') {
             return send('No songs with this tag');
         };
         //Last.fm sends wrong total (wrong by a lot), so division by 3 should cut off all empty responses
@@ -168,7 +168,7 @@ lfm.getRandomSong = function (tag, callback, send) {
             send(`Your song: ${track.artist} — ${track.name}`)
             callback(track);
         });
-    });
+    }, send);
 };
 
 module.exports = lfm;
