@@ -21,6 +21,9 @@ http.createServer(function (req, res) {
                 console.log(`Bad JSON: ${e.message}`);
                 return;
             };
+            if (process.env.DEBUG === '1') {
+                console.log(body);
+            };
             bot.verifyRequest(body);
         } else {
             res.writeHead(401);
