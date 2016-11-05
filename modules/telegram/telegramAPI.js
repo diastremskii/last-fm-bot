@@ -69,16 +69,18 @@ tg.sendTextMessage = function(text, chatId, parseMode, hidePreview, replyTo, rep
 };
 
 tg.selectiveForceReply = function (text, message, parseMode, hidePreview) {
+    var forceReply = {
+        'force_reply': true,
+        'selective': true
+    };
+
     tg.sendTextMessage(
         text,
         message.chat.id,
         parseMode,
         hidePreview,
         message.message_id,
-        {
-            'force_reply': true,
-            'selective': true
-        }
+        (message.chat.type !== 'private') ? forceReply : {}
     );
 };
 
