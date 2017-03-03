@@ -3,6 +3,7 @@
 var config = require('../config');
 var qs = require('querystring');
 var http = require('http');
+var https = require('https');
 
 var lfmAPI = {};
 
