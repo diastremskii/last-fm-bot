@@ -34,7 +34,7 @@ lfmAPI.executeMethod = function (method, options, callback) {
 }
 
 lfmAPI.downloadFullPage = function (url, callback) {
-    http.get(url, function(res) {
+    https.get(url, function(res) {
         var body = '';
 
         res.on('data', function(chunk) {

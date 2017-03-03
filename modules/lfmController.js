@@ -110,7 +110,7 @@ lfm.getYouTubeLink = function (artist, track, send) {
             if (trackInfo.error) {
                 send(trackInfo.message);
             } else {
-                var lfmLink=trackInfo.track.url.replace(/https:/, 'http:');
+                var lfmLink=trackInfo.track.url;
                 lfmAPI.downloadFullPage(lfmLink, function (body) {
                     youtubeLink = body.match(/data-youtube-url="(.*?)"/);
                     if (youtubeLink) {
