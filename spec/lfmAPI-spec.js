@@ -29,7 +29,7 @@ describe('Module for making requests to Last.fm API', function () {
     });
     describe('downloadFullPage', function () {
         it('downloads full Last.fm page', function (done) {
-            lfmAPI.downloadFullPage('http://www.last.fm/music/Natalie+Imbruglia/_/Torn', function (body) {
+            lfmAPI.downloadFullPage('https://www.last.fm/music/Natalie+Imbruglia/_/Torn', function (body) {
                 expect(body.length).toBeGreaterThan(0);
                 done();
             });
