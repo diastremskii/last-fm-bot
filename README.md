@@ -4,7 +4,7 @@
 
 ![Last.fm bot](http://i.imgur.com/mkgor1u.png)
 
-A telegram bot to interact with Last.fm. Created using telegraf framework+telegraf+flow. Bot can provide a lot of information about artists, albums, tracks, tags and can be used as handy music browser. 
+A telegram bot to interact with Last.fm. Created using telegraf framework+telegraf-flow. Bot can provide a lot of information about artists, albums, tracks, tags and can be used as handy music browser. 
 
 Two types of storage supported: in-memory and Redis.
 
