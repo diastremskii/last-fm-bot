@@ -38,9 +38,10 @@ if (config.REDIS_URL) {
     ttl: config.SESSION_TTL
   });
   app.use(session.middleware())
+} else {
+  app.use(Telegraf.memorySession());
 }
 
-app.use(Telegraf.memorySession());
 app.use(flow.middleware());
 
 app.on('callback_query', callbackRouter.middleware())
