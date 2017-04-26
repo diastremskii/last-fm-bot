@@ -1,34 +1,27 @@
 # Last.fm bot
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](LICENSE)
-![Heroku](https://heroku-badge.herokuapp.com/?app=lastfmbot&root=status&style=flat)
 [![Build Status](https://travis-ci.org/TheBeastOfCaerbannog/last-fm-bot.svg?branch=master)](https://travis-ci.org/TheBeastOfCaerbannog/last-fm-bot)
 
-A telegram bot to interact with Last.fm. Created without any dependencies (except test dependencies) for educational purposes only. Live version: https://telegram.me/l_fmbot
+![Last.fm bot](http://i.imgur.com/mkgor1u.png)
 
-At the moment there is not much this bot can do.
+A telegram bot to interact with Last.fm. Created using telegraf framework+telegraf+flow. Bot can provide a lot of information about artists, albums, tracks, tags and can be used as handy music browser. 
 
-But more commands will come soon. Expect command changes.
+Two types of storage supported: in-memory and Redis.
 
-Hosted on Heroku with free account, so expect slight latency.
+## Deploy
 
-## Deploy on heroku
-
-1. Create a new heroku app.
-2. Select GitHub as deployment method and connect it to this or to your repository.
-3. Create a new bot account with [BotFather](https://telegram.me/BotFather).
-4. Go to your heroku app settings page and create the following config variables:
+1. Create a new bot account with [BotFather](https://telegram.me/BotFather).
+2. Upload bot to your hosting.
+3. Change webhook settings if you would like to use self-signed certificate (or maybe just use polling)
+4. Set following environment variables:
  - TELEGRAM_TOKEN: the token you received from the BotFather.
- - TELEGRAM_USERNAME: the username of your bot.
- - WEBHOOK_BASE_URL: your heroku app url *https://your-heroku-app-name.herokuapp.com*
+ - WEBHOOK_BASE_PATH: full url to your bot without trailing slash *https://your-bot.example.com*
  - LFM_TOKEN: your API key from Last.fm
+5. If you want to, you can also set optional variables (or you can just stick with defaults):
+ - PORT - port for your bot (default - 3000)
+ - REDIS_URL - URL to Redis server if you would like to have persistent sessions and buttons
+ - LFM_AUTOCORRECT - autocorrect misspelled queries to Last.fm API (default - 1)
+ - SIMILAR_LIMIT - number of similar artists to show (default - 10)
+ - TOP_LIMIT - number of top tracks/albums to show. (default - 8)
+ - SESSION_TTL - number in seconds to keep session in Redis. (default - 10 days)
 
-## Run tests
-1. Install dependencies
-    ```
-    npm install
-    ```
-2. Don't forget to export config variables or set them in config.js (you need only LFM_TOKEN for tests)
-2. Run tests:
-    ```
-    npm test
-    ```
