@@ -1,11 +1,10 @@
 {
   "name": "last-fm-bot",
-  "version": "0.2.3",
+  "version": "0.9.5",
   "description": "Last.fm Telegram bot",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/jasmine/bin/jasmine.js",
-    "start": "node ./index.js"
+    "start": "node ./src/app.js"
   },
   "repository": {
     "type": "git",
@@ -14,12 +13,16 @@
   "author": "Daniil Yastremskiy <Catharsis@post.cz>",
   "license": "MIT",
   "engines": {
-    "node": "4.5.0"
+    "node": "6.10.1"
   },
   "bugs": "https://github.com/TheBeastOfCaerbannog/last-fm-bot/issues",
   "homepage": "https://github.com/TheBeastOfCaerbannog/last-fm-bot",
-  "devDependencies": {
-    "jasmine": "^2.5.2",
-    "proxyquire": "^1.7.10"
+  "dependencies": {
+    "co": "^4.6.0",
+    "curryfm": "^1.1.2",
+    "redis": "^2.7.1",
+    "telegraf": "^3.6.7",
+    "telegraf-flow": "^8.1.2",
+    "telegraf-session-redis": "^4.2.0"
   }
 }
