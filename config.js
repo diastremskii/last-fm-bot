@@ -12,5 +12,6 @@ config.TOP_LIMIT = process.env.TOP_LIMIT || 8;
 
 config.REDIS_URL = process.env.REDIS_URL;
 config.SESSION_TTL = process.env.SESSION_TTL || 60 * 60 * 24 * 10;
+config.BUTTONS_TTL = process.env.SESSION_TTL || 60 * 60 * 24 * 10;
 
 module.exports = config;

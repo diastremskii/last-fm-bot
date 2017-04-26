@@ -44,6 +44,7 @@ class CallbackStoreMemory {
 class CallbackStoreRedis {
   constructor() {
     this.client = redis.createClient(config.REDIS_URL);
+    this.client.ttl = (key) => this.client.expire(key, config.BUTTONS_TTL);
   }
 
   add(data) {
@@ -51,7 +52,7 @@ class CallbackStoreRedis {
     /*
      * Yes, this is intentional. 
      */
-    this.client.set(hashedData, data);
+    this.client.set(hashedData, data).then(() => this.client.ttl(hashedData));
     /*          ^^^
      * Redis set is async and function returns before data is actualy set.
      * Data is added with Keyboard gelper (because hashed data is sent with

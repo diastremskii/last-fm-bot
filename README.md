@@ -24,4 +24,4 @@ Two types of storage supported: in-memory and Redis.
  - SIMILAR_LIMIT - number of similar artists to show (default - 10)
  - TOP_LIMIT - number of top tracks/albums to show. (default - 8)
  - SESSION_TTL - number in seconds to keep session in Redis. (default - 10 days)
-
+ - BUTTONS_TTL - number in seconds to keep buttons in Redis. (default - 10 days)
