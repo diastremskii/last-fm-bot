@@ -1,5 +1,11 @@
 const fetch = require('node-fetch')
+const curryfm = require('curryfm');
+
+const config = require('../../config');
 const YouTubeStore = require('../storage/youtube');
+
+const lfm = curryfm.default(config.LFM_TOKEN);
+const artist = lfm('artist');
 
 class LastfmExtra {
   constructor () {
@@ -27,7 +33,26 @@ class LastfmExtra {
             return match[1];
           }) 
       })
-    
+  }
+
+  // Because of Last.fm API bug response for big page numbers can be empty
+  static randomSong (artistName, total) {
+    const limit = total > 1000 ? 1000 : total;
+    const randomTrack = Math.ceil(Math.random() * limit - 1) + 1;
+    return artist('getTopTracks', {
+      artist: artistName,
+      autocorrect: config.LFM_AUTOCORRECT,
+      limit: 1,
+      page: randomTrack,
+      format: 'json'
+    }).then(res => {
+      
+      if (res.toptracks.track.length === 0) {
+        return LastfmExtra.randomSong(artistName, total)
+      }
+
+      return res.toptracks.track[0];
+    })
   }
 }
 

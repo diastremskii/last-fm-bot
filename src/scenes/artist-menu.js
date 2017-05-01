@@ -5,6 +5,7 @@ const curryfm = require('curryfm');
 const config = require('../../config');
 const Format = require('../helpers/format');
 const Keyboard = require('../helpers/keyboard');
+const LastfmExtra = require('../helpers/lastfm-extra');
 
 const lfm = curryfm.default(config.LFM_TOKEN);
 const artist = lfm('artist');
@@ -13,7 +14,7 @@ const artist = lfm('artist');
 const artistKeyboardButtons = [
   ['❕ Info', '🎧 Similar artists'],
   ['📀 Top albums', '❤️ Top tracks'],
-  ['#🎲 Random track', '⬅️ Back']
+  ['🎲 Random track', '⬅️ Back']
 ];
 
 const artistKeyboard = Markup
@@ -98,8 +99,24 @@ artistMenu.hears('❤️ Top tracks', (ctx) => {
     ctx.reply('Top tracks:', Keyboard.tracksNav(res.toptracks.track).extra());
   })
 })
-artistMenu.hears('#🎲 Random track', (ctx) => {
-  ctx.reply('Sorry, this button does\'t work yet. But soon it will be!');
+artistMenu.hears('🎲 Random track', (ctx) => {
+  artist('getTopTracks', {
+    artist: ctx.session.artist,
+    autocorrect: config.LFM_AUTOCORRECT,
+    limit: 1,
+    format: 'json'
+  }).then(res => {
+    if (res.error) {
+      return ctx.reply(res.message);
+    };
+    return res.toptracks['@attr'].totalPages
+  }).then(totalPages => {
+    return LastfmExtra.randomSong(ctx.session.artist, totalPages)
+  }).then(track => {
+    ctx.session.artist = track.artist.name;
+    ctx.session.track = track.name;
+    ctx.flow.enter('trackMenu');
+  })
 })
 artistMenu.hears('⬅️ Back', (ctx) => {
   ctx.flow.enter('startMenu');
