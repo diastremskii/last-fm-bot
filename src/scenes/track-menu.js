@@ -65,22 +65,13 @@ trackMenu.hears('🎼 Similar tracks', (ctx) => {
   })
 })
 trackMenu.hears('🎥 YouTube video', (ctx) => {
-  track('getInfo', {
-    artist: ctx.session.artist,
-    track: ctx.session.track,
-    autocorrect: config.LFM_AUTOCORRECT,
-    format: 'json'
-  }).then(res => {
-    if (res.error) {
-      return ctx.reply(res.message);
-    };
-    return LastfmExtra.youtube(res.track.url)
-  }).then(youtubeLink => {
-    if (youtubeLink === undefined) {
-      return ctx.reply('Sorry, no YouTube video were found');
-    }
-    return ctx.reply(youtubeLink);
-  })
+  return LastfmExtra.youtube(ctx.session.artist, ctx.session.track)
+    .then(youtubeLink => {
+      if (youtubeLink === undefined) {
+        return ctx.reply('Sorry, no YouTube video were found');
+      }
+      return ctx.reply(`Video can be incorrect. (Sorry!) \n ${youtubeLink}`);
+    })
 })
 trackMenu.hears('🎲 Random track from this artist', (ctx) => {
   artist('getTopTracks', {

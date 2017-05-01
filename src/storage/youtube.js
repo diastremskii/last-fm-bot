@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const config = require('../../config');
 const redis = require('redis');
 
-// Key for YouTube URL's is Last.fm URL of track
+// Key for YouTube URL's is artist+track
 
 
 class YouTubeMemory {
@@ -10,15 +10,17 @@ class YouTubeMemory {
     this.data = new Map();
   }
 
-  add(url, youtubeLink) {
-    if (!this.data.has(url)) {
-      this.data.set(url, youtubeLink);
+  add(artist, track, youtubeLink) {
+    const key = artist + track;
+    if (!this.data.has(key)) {
+      this.data.set(key, youtubeLink);
     }
-    return url;
+    return true;
   }
 
-  get(url) {
-    return this.data.get(url);
+  get(artist, track) {
+    const key = artist + track;
+    return this.data.get(key);
   }
 }
 
@@ -28,21 +30,23 @@ class YouTubeRedis {
     this.client.ttl = (key) => this.client.expire(key, config.YOUTUBE_TTL);
   }
 
-  add(url, youtubeLink) {
+  add(artist, track, youtubeLink) {
+    const key = artist + track;
     return new Promise((resolve, reject) => {
-      this.client.set(url, youtubeLink, (err) => {
+      this.client.set(key, youtubeLink, (err) => {
         if (err) {
           reject();
         }
-        this.client.ttl(url);
-        resolve(url);
+        this.client.ttl(key);
+        resolve(true);
       })
     });
   }
 
   get(url) {
+    const key = artist + track;
     return new Promise((resolve, reject) => {
-      this.client.get(url, (err, reply) => {
+      this.client.get(key, (err, reply) => {
         if (!reply || err) {
           reject();
         }

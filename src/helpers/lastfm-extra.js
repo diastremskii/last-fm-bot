@@ -6,31 +6,40 @@ const YouTubeStore = require('../storage/youtube');
 
 const lfm = curryfm.default(config.LFM_TOKEN);
 const artist = lfm('artist');
+const YOUTUBE_SEARCH = 'https://www.googleapis.com/youtube/v3/search';
 
 class LastfmExtra {
   constructor () {
 
   }
 
-  static youtube (url) {
-    return Promise.resolve(YouTubeStore.get(url))
+  static youtube (artistName, track) {
+    if (config.YOUTUBE_KEY === undefined) {
+      return undefined;
+    }
+
+    return Promise.resolve(YouTubeStore.get(artistName, track))
       .then((cacheRes) => {
         if (cacheRes) {
           return cacheRes;
         };
-        return fetch(url)
-          .then(res => res.text())
-          .then(page => page.match(/data-youtube-url="(.+)"/))
-          .then(match => {
-            // No error handling for setting keys is intensional.
-            // If any error happens while setting the key - it can be ignored.
-            if (match === null) {
-              // Store zero to indicate what link wasn't found
-              YouTubeStore.add(url, 0);
+        return fetch(`${YOUTUBE_SEARCH}?part=snippet&q=${artistName} ${track}`
+          + `&type=video&fields=items/id&key=${config.YOUTUBE_KEY}`)
+          .then(res => res.json())
+          .then(videos => {
+            if (videos.error !== undefined) {
               return undefined;
             }
-            YouTubeStore.add(url, match[1]);
-            return match[1];
+
+            // No error handling for setting keys is intensional.
+            // If any error happens while setting the key - it can be ignored.
+            if (videos.items.length === 0) {
+              // Store zero to indicate what link wasn't found
+              YouTubeStore.add(artistName, track, 0);
+              return undefined;
+            }
+            YouTubeStore.add(artistName, track, videos.items[0].id.videoId);
+            return `https://youtube.com/watch?v=${videos.items[0].id.videoId}`;
           }) 
       })
   }

@@ -15,4 +15,6 @@ config.SESSION_TTL = process.env.SESSION_TTL || 60 * 60 * 24 * 10;
 config.BUTTONS_TTL = process.env.SESSION_TTL || 60 * 60 * 24 * 10;
 config.YOUTUBE_TTL = process.env.YOUTUBE_TTL || 60 * 60 * 24 * 30;
 
+config.YOUTUBE_KEY = process.env.YOUTUBE_KEY;
+
 module.exports = config;

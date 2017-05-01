@@ -26,3 +26,4 @@ Two types of storage supported: in-memory and Redis.
  - SESSION_TTL - number in seconds to keep session in Redis. (default - 10 days)
  - BUTTONS_TTL - number in seconds to keep buttons in Redis. (default - 10 days)
  - YOUTUBE_TTL - number in seconds to keep YouTube links cache in Redis. (default - 30 days) 
+ - YOUTUBE_KEY - key for YouTube Data API v3. Set it if you want to request YouTube videos
