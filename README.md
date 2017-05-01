@@ -25,3 +25,4 @@ Two types of storage supported: in-memory and Redis.
  - TOP_LIMIT - number of top tracks/albums to show. (default - 8)
  - SESSION_TTL - number in seconds to keep session in Redis. (default - 10 days)
  - BUTTONS_TTL - number in seconds to keep buttons in Redis. (default - 10 days)
+ - YOUTUBE_TTL - number in seconds to keep YouTube links cache in Redis. (default - 30 days) 

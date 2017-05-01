@@ -73,11 +73,11 @@ trackMenu.hears('🎥 YouTube video', (ctx) => {
       return ctx.reply(res.message);
     };
     return LastfmExtra.youtube(res.track.url)
-  }).then(url => {
-    if (url === undefined) {
+  }).then(youtubeLink => {
+    if (youtubeLink === undefined) {
       return ctx.reply('Sorry, no YouTube video were found');
     }
-    return ctx.reply(url);
+    return ctx.reply(youtubeLink);
   })
 })
 trackMenu.hears('⬅️ Back', (ctx) => {

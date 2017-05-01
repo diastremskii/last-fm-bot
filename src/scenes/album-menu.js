@@ -55,6 +55,9 @@ albumMenu.hears('🎼 Tracks', (ctx) => {
     if (res.error) {
       return ctx.reply(res.message);
     };
+     if (res.album.tracks.track.length === 0) {
+      return ctx.reply('No tracks found');
+    }
 
     ctx.reply('Tracks:', Keyboard.tracks(res.album.tracks.track).extra());
   })
