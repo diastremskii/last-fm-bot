@@ -39,9 +39,10 @@ class LastfmExtra {
               return undefined;
             }
             YouTubeStore.add(artistName, track, videos.items[0].id.videoId);
-            return `https://youtube.com/watch?v=${videos.items[0].id.videoId}`;
+            return videos.items[0].id.videoId;
           }) 
       })
+      .then(videoId => `https://youtube.com/watch?v=${videoId}`)
   }
 
   // Because of Last.fm API bug response for big page numbers can be empty
