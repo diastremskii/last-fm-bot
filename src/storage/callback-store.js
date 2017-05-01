@@ -52,7 +52,7 @@ class CallbackStoreRedis {
     /*
      * Yes, this is intentional. 
      */
-    this.client.set(hashedData, data).then(() => this.client.ttl(hashedData));
+    this.client.set(hashedData, data, () => this.client.ttl(hashedData));
     /*          ^^^
      * Redis set is async and function returns before data is actualy set.
      * Data is added with Keyboard helper (because hashed data is sent with
