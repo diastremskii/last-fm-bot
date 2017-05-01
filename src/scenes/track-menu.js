@@ -9,13 +9,15 @@ const LastfmExtra = require('../helpers/lastfm-extra');
 
 const lfm = curryfm.default(config.LFM_TOKEN);
 const track = lfm('track');
+const artist = lfm('artist');
 
 const trackMenu = new Scene('trackMenu');
 
 //Don't forget to change .hears handler after modifying this array
 const trackKeyboardButtons = [
   ['❕ Info', '🎼 Similar tracks'],
-  ['🎥 YouTube video', '⬅️ Back']
+  ['🎥 YouTube video', '🎲 Random track from this artist' ],
+  [ '⬅️ Back' ]
 ];
 
 const trackKeyboard = Markup
@@ -78,6 +80,25 @@ trackMenu.hears('🎥 YouTube video', (ctx) => {
       return ctx.reply('Sorry, no YouTube video were found');
     }
     return ctx.reply(youtubeLink);
+  })
+})
+trackMenu.hears('🎲 Random track from this artist', (ctx) => {
+  artist('getTopTracks', {
+    artist: ctx.session.artist,
+    autocorrect: config.LFM_AUTOCORRECT,
+    limit: 1,
+    format: 'json'
+  }).then(res => {
+    if (res.error) {
+      return ctx.reply(res.message);
+    };
+    return res.toptracks['@attr'].totalPages
+  }).then(totalPages => {
+    return LastfmExtra.randomTrack(ctx.session.artist, totalPages)
+  }).then(track => {
+    ctx.session.artist = track.artist.name;
+    ctx.session.track = track.name;
+    ctx.flow.enter('trackMenu');
   })
 })
 trackMenu.hears('⬅️ Back', (ctx) => {

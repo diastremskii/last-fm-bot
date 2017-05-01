@@ -111,7 +111,7 @@ artistMenu.hears('🎲 Random track', (ctx) => {
     };
     return res.toptracks['@attr'].totalPages
   }).then(totalPages => {
-    return LastfmExtra.randomSong(ctx.session.artist, totalPages)
+    return LastfmExtra.randomTrack(ctx.session.artist, totalPages)
   }).then(track => {
     ctx.session.artist = track.artist.name;
     ctx.session.track = track.name;

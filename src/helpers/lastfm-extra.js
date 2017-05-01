@@ -36,7 +36,7 @@ class LastfmExtra {
   }
 
   // Because of Last.fm API bug response for big page numbers can be empty
-  static randomSong (artistName, total) {
+  static randomTrack (artistName, total) {
     const limit = total > 1000 ? 1000 : total;
     const randomTrack = Math.ceil(Math.random() * limit - 1) + 1;
     return artist('getTopTracks', {
