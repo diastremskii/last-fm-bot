@@ -5,6 +5,7 @@ const curryfm = require('curryfm');
 const config = require('../../config');
 const Format = require('../helpers/format');
 const Keyboard = require('../helpers/keyboard');
+const LastfmExtra = require('../helpers/lastfm-extra');
 
 const lfm = curryfm.default(config.LFM_TOKEN);
 const track = lfm('track');
@@ -14,7 +15,7 @@ const trackMenu = new Scene('trackMenu');
 //Don't forget to change .hears handler after modifying this array
 const trackKeyboardButtons = [
   ['❕ Info', '🎼 Similar tracks'],
-  ['#🎥 YouTube video', '⬅️ Back']
+  ['🎥 YouTube video', '⬅️ Back']
 ];
 
 const trackKeyboard = Markup
@@ -52,7 +53,7 @@ trackMenu.hears('🎼 Similar tracks', (ctx) => {
   }).then(res => {
     if (res.error) {
       return ctx.reply(res.message);
-    };
+    }
     if (res.similartracks.track.length === 0) {
       return ctx.reply('No tracks found');
     }
@@ -61,8 +62,23 @@ trackMenu.hears('🎼 Similar tracks', (ctx) => {
       Keyboard.similarTracks(res.similartracks.track).extra());
   })
 })
-trackMenu.hears('#🎥 YouTube video', (ctx) => {
-  ctx.reply('Sorry, this button does\'t work yet. But soon it will be!');
+trackMenu.hears('🎥 YouTube video', (ctx) => {
+  track('getInfo', {
+    artist: ctx.session.artist,
+    track: ctx.session.track,
+    autocorrect: config.LFM_AUTOCORRECT,
+    format: 'json'
+  }).then(res => {
+    if (res.error) {
+      return ctx.reply(res.message);
+    };
+    return LastfmExtra.youtube(res.track.url)
+  }).then(url => {
+    if (url === undefined) {
+      return ctx.reply('Sorry, no YouTube video were found');
+    }
+    return ctx.reply(url);
+  })
 })
 trackMenu.hears('⬅️ Back', (ctx) => {
   ctx.flow.enter('artistMenu');

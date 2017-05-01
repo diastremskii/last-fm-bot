@@ -55,7 +55,7 @@ class CallbackStoreRedis {
     this.client.set(hashedData, data).then(() => this.client.ttl(hashedData));
     /*          ^^^
      * Redis set is async and function returns before data is actualy set.
-     * Data is added with Keyboard gelper (because hashed data is sent with
+     * Data is added with Keyboard helper (because hashed data is sent with
      * button callback) and creating sort of async keyboards would be 
      * really awkward. So if users will get non-working button instead of
      * error message if Redis fails sounds not like a big deal
