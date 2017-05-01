@@ -9,7 +9,10 @@ const artistWizard = new WizardScene('artistWizard',
     );
     ctx.flow.wizard.next();
   },
-  (ctx) => {
+  (ctx, next) => {
+    if (ctx.message === undefined) {
+      return next();
+    }
     ctx.session.artist = ctx.message.text;
     ctx.flow.enter('artistMenu');
   }
