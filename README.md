@@ -2,7 +2,7 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](LICENSE)
 [![Build Status](https://travis-ci.org/TheBeastOfCaerbannog/last-fm-bot.svg?branch=master)](https://travis-ci.org/TheBeastOfCaerbannog/last-fm-bot)
 
-![Last.fm bot](http://i.imgur.com/mkgor1u.png)
+![Last.fm bot](http://i.imgur.com/r3GE1bw.png)
 
 A telegram bot to interact with Last.fm. Created using telegraf framework+telegraf-flow. Bot can provide a lot of information about artists, albums, tracks, tags and can be used as handy music browser. 
 
