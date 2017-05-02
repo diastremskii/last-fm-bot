@@ -13,8 +13,8 @@ class LastfmExtra {
   constructor () {
 
   }
-
-  static youtube (artistName, track) {
+  
+  static getVideoId (artistName, track) {
     if (config.YOUTUBE_KEY === undefined) {
       return undefined;
     }
@@ -43,11 +43,6 @@ class LastfmExtra {
             YouTubeStore.add(artistName, track, videos.items[0].id.videoId);
             return videos.items[0].id.videoId;
           })
-      })
-      .then(videoId => {
-        if (videoId !== undefined) {
-          return `https://youtube.com/watch?v=${videoId}`;
-        }
       })
   }
 

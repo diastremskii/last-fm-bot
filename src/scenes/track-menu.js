@@ -64,12 +64,13 @@ trackMenu.hears('🎼 Similar tracks', (ctx) => {
   })
 })
 trackMenu.hears('🎥 YouTube video', (ctx) => {
-  return LastfmExtra.youtube(ctx.session.artist, ctx.session.track)
-    .then(youtubeLink => {
-      if (youtubeLink === undefined) {
+  return LastfmExtra.getVideoId(ctx.session.artist, ctx.session.track)
+    .then(videoId => {
+      if (videoId === undefined) {
         return ctx.reply('Sorry, no YouTube video were found');
       }
-      return ctx.reply(`Video can be incorrect. (Sorry!) \n ${youtubeLink}`);
+      return ctx.reply('Video can be incorrect. (Sorry!) \n ' 
+        + `https://youtube.com/watch?v=${videoId}`);
     })
 })
 trackMenu.hears('⬅️ Back', (ctx) => {
