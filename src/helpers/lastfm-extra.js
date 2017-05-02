@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const curryfm = require('curryfm');
+const qs = require('querystring')
 
 const config = require('../../config');
 const YouTubeStore = require('../storage/youtube');
@@ -23,7 +24,8 @@ class LastfmExtra {
         if (cacheRes) {
           return cacheRes;
         };
-        return fetch(`${YOUTUBE_SEARCH}?part=snippet&q=${artistName} ${track}`
+        const query = qs.escape(`${artistName} ${track}`);
+        return fetch(`${YOUTUBE_SEARCH}?part=snippet&q=${query}`
           + `&type=video&fields=items/id&key=${config.YOUTUBE_KEY}`)
           .then(res => res.json())
           .then(videos => {
